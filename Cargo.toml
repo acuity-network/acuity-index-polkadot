@@ -7,3 +7,5 @@ edition = "2021"
 
 [dependencies]
 tokio = { version = "1.28.2", features = ["macros", "rt", "rt-multi-thread"] }
+subxt = { git = "https://github.com/paritytech/subxt", branch = "master" }
+hybrid-indexer = { path = "../hybrid-indexer" }
