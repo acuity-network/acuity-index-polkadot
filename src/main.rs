@@ -10,7 +10,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
         indexer: &hybrid_indexer::substrate::Indexer<Self>,
         block_number: u32,
         event_index: u32,
-        event: subxt::events::EventDetails<subxt::PolkadotConfig>,
+        event: subxt::events::EventDetails<Self::RuntimeConfig>,
     ) {
         let event = event.as_root_event::<polkadot::Event>();
         match event {
