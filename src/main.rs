@@ -5,6 +5,7 @@ struct PolkadotIndexer;
 
 pub mod substrate;
 use crate::substrate::frame_system::*;
+use crate::substrate::scheduler::*;
 
 impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
@@ -23,7 +24,9 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                     polkadot::Event::System(e) => {
                         system_index_event(indexer, block_number, event_index, e);
                     }
-                    polkadot::Event::Scheduler(e) => {}
+                    polkadot::Event::Scheduler(e) => {
+                        scheduler_index_event(indexer, block_number, event_index, e);
+                    }
                     polkadot::Event::Preimage(e) => {}
                     polkadot::Event::VoterList(e) => {
                         match e {
