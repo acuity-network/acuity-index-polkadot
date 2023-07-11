@@ -6,6 +6,7 @@ struct PolkadotIndexer;
 
 pub mod substrate;
 use crate::substrate::frame_system::*;
+use crate::substrate::indices::*;
 use crate::substrate::preimage::*;
 use crate::substrate::scheduler::*;
 
@@ -32,7 +33,9 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                     Event::Preimage(e) => {
                         preimage_index_event(indexer, block_number, event_index, e);
                     }
-                    Event::Indices(event) => {}
+                    Event::Indices(event) => {
+                        indices_index_event(indexer, block_number, event_index, event);
+                    }
                     Event::Balances(event) => {}
                     Event::TransactionPayment(event) => {}
                     Event::Staking(event) => {}
