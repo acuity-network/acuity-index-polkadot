@@ -1,5 +1,6 @@
 #[subxt::subxt(runtime_metadata_path = "metadata.scale")]
 pub mod polkadot {}
+use polkadot::Event;
 
 struct PolkadotIndexer;
 
@@ -17,37 +18,60 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
         event_index: u32,
         event: subxt::events::EventDetails<Self::RuntimeConfig>,
     ) {
-        let event = event.as_root_event::<polkadot::Event>();
+        let event = event.as_root_event::<Event>();
         match event {
             Ok(event) => {
                 //println!("Event: {:?}", event);
                 match event {
-                    polkadot::Event::System(e) => {
+                    Event::System(e) => {
                         system_index_event(indexer, block_number, event_index, e);
                     }
-                    polkadot::Event::Scheduler(e) => {
+                    Event::Scheduler(e) => {
                         scheduler_index_event(indexer, block_number, event_index, e);
                     }
-                    polkadot::Event::Preimage(e) => {
+                    Event::Preimage(e) => {
                         preimage_index_event(indexer, block_number, event_index, e);
                     }
-                    polkadot::Event::VoterList(e) => {
-                        match e {
-                            polkadot::runtime_types::pallet_bags_list::pallet::Event::Rebagged{who, from, to} => {
-                                indexer.index_event_account_id(who, block_number, event_index);
-                            }
-                            polkadot::runtime_types::pallet_bags_list::pallet::Event::ScoreUpdated{who, new_score} => {
-                                indexer.index_event_account_id(who, block_number, event_index);
-                            }
-                        }
-                        /*
-                        hybrid_indexer::pallets::bags_list::bags_list_index_event::<
-                            Self,
-                            polkadot::runtime_types::pallet_bags_list::pallet::Event,
-                        >(indexer, block_number, event_index, e);
-                        */
-                    }
-                    _ => (),
+                    Event::Indices(event) => {}
+                    Event::Balances(event) => {}
+                    Event::TransactionPayment(event) => {}
+                    Event::Staking(event) => {}
+                    Event::Offences(event) => {}
+                    Event::Session(event) => {}
+                    Event::Grandpa(event) => {}
+                    Event::ImOnline(event) => {}
+                    Event::Democracy(event) => {}
+                    Event::Council(event) => {}
+                    Event::TechnicalCommittee(event) => {}
+                    Event::PhragmenElection(event) => {}
+                    Event::TechnicalMembership(event) => {}
+                    Event::Treasury(event) => {}
+                    Event::ConvictionVoting(event) => {}
+                    Event::Referenda(event) => {}
+                    Event::Whitelist(event) => {}
+                    Event::Claims(event) => {}
+                    Event::Vesting(event) => {}
+                    Event::Utility(event) => {}
+                    Event::Identity(event) => {}
+                    Event::Proxy(event) => {}
+                    Event::Multisig(event) => {}
+                    Event::Bounties(event) => {}
+                    Event::ChildBounties(event) => {}
+                    Event::Tips(event) => {}
+                    Event::ElectionProviderMultiPhase(event) => {}
+                    Event::VoterList(event) => {}
+                    Event::NominationPools(event) => {}
+                    Event::FastUnstake(event) => {}
+                    Event::ParaInclusion(event) => {}
+                    Event::Paras(event) => {}
+                    Event::Hrmp(event) => {}
+                    Event::ParasDisputes(event) => {}
+                    Event::Registrar(event) => {}
+                    Event::Slots(event) => {}
+                    Event::Auctions(event) => {}
+                    Event::Crowdloan(event) => {}
+                    Event::XcmPallet(event) => {}
+                    Event::Ump(event) => {}
                 }
             }
             Err(_) => {}
