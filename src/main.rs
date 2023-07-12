@@ -42,13 +42,15 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                     Event::Staking(event) => {
                         staking_index_event(indexer, block_number, event_index, event);
                     }
-                    Event::Offences(event) => {}
+                    Event::Offences(_) => {}
                     Event::Session(event) => {
                         session_index_event(indexer, block_number, event_index, event);
                     }
-                    Event::Grandpa(event) => {}
-                    Event::ImOnline(event) => {}
-                    Event::Democracy(event) => {}
+                    Event::Grandpa(_) => {}
+                    Event::ImOnline(_) => {}
+                    Event::Democracy(event) => {
+                        democracy_index_event(indexer, block_number, event_index, event);
+                    }
                     Event::Council(event) => {}
                     Event::TechnicalCommittee(event) => {}
                     Event::PhragmenElection(event) => {}
@@ -89,12 +91,5 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
 
 #[tokio::main]
 async fn main() {
-    hybrid_indexer::start::<PolkadotIndexer>().await;
-
-    /*
-        let p = Pallets{
-            bags_list: polkadot::voter_list::events::Rebagged{},
-        };
-    */
-    //    test::<Pallets>();
+    let _ = hybrid_indexer::start::<PolkadotIndexer>().await;
 }
