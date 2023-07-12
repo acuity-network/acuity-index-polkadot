@@ -4,6 +4,7 @@ use crate::polkadot::runtime_types::{
     frame_system::pallet::Event as SystemEvent, pallet_balances::pallet::Event as BalancesEvent,
     pallet_indices::pallet::Event as IndicesEvent, pallet_preimage::pallet::Event as PreimageEvent,
     pallet_scheduler::pallet::Event as SchedulerEvent,
+    pallet_session::pallet::Event as SessionEvent,
     pallet_staking::pallet::pallet::Event as StakingEvent,
     pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
 };
@@ -226,5 +227,18 @@ pub fn staking_index_event<R: RuntimeIndexer>(
             indexer.index_event_account_id(stash, block_number, event_index);
         }
         StakingEvent::ForceEra { .. } => {}
+    }
+}
+
+pub fn session_index_event<R: RuntimeIndexer>(
+    indexer: &Indexer<R>,
+    block_number: u32,
+    event_index: u32,
+    event: SessionEvent,
+) {
+    match event {
+        SessionEvent::NewSession { session_index } => {
+            indexer.index_event_session_index(session_index, block_number, event_index);
+        }
     }
 }
