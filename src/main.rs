@@ -33,7 +33,9 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                     Event::Indices(event) => {
                         indices_index_event(indexer, block_number, event_index, event);
                     }
-                    Event::Balances(event) => {}
+                    Event::Balances(event) => {
+                        balances_index_event(indexer, block_number, event_index, event);
+                    }
                     Event::TransactionPayment(event) => {}
                     Event::Staking(event) => {}
                     Event::Offences(event) => {}
