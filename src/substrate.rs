@@ -4,6 +4,7 @@ use crate::polkadot::runtime_types::{
     frame_system::pallet::Event as SystemEvent, pallet_balances::pallet::Event as BalancesEvent,
     pallet_indices::pallet::Event as IndicesEvent, pallet_preimage::pallet::Event as PreimageEvent,
     pallet_scheduler::pallet::Event as SchedulerEvent,
+    pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
 };
 
 pub fn system_index_event<R: RuntimeIndexer>(
@@ -150,6 +151,19 @@ pub fn balances_index_event<R: RuntimeIndexer>(
             indexer.index_event_account_id(who, block_number, event_index);
         }
         BalancesEvent::Thawed { who, .. } => {
+            indexer.index_event_account_id(who, block_number, event_index);
+        }
+    }
+}
+
+pub fn transaction_payment_index_event<R: RuntimeIndexer>(
+    indexer: &Indexer<R>,
+    block_number: u32,
+    event_index: u32,
+    event: TransactionPaymentEvent,
+) {
+    match event {
+        TransactionPaymentEvent::TransactionFeePaid { who, .. } => {
             indexer.index_event_account_id(who, block_number, event_index);
         }
     }
