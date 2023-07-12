@@ -21,14 +21,14 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Ok(event) => {
                 //println!("Event: {:?}", event);
                 match event {
-                    Event::System(e) => {
-                        system_index_event(indexer, block_number, event_index, e);
+                    Event::System(event) => {
+                        system_index_event(indexer, block_number, event_index, event);
                     }
-                    Event::Scheduler(e) => {
-                        scheduler_index_event(indexer, block_number, event_index, e);
+                    Event::Scheduler(event) => {
+                        scheduler_index_event(indexer, block_number, event_index, event);
                     }
-                    Event::Preimage(e) => {
-                        preimage_index_event(indexer, block_number, event_index, e);
+                    Event::Preimage(event) => {
+                        preimage_index_event(indexer, block_number, event_index, event);
                     }
                     Event::Indices(event) => {
                         indices_index_event(indexer, block_number, event_index, event);
@@ -57,7 +57,9 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                     Event::TechnicalCommittee(event) => {
                         collective2_index_event(indexer, block_number, event_index, event);
                     }
-                    Event::PhragmenElection(event) => {}
+                    Event::PhragmenElection(event) => {
+                        elections_phragmen_index_event(indexer, block_number, event_index, event);
+                    }
                     Event::TechnicalMembership(event) => {}
                     Event::Treasury(event) => {}
                     Event::ConvictionVoting(event) => {}
