@@ -5,10 +5,7 @@ use polkadot::Event;
 struct PolkadotIndexer;
 
 pub mod substrate;
-use crate::substrate::frame_system::*;
-use crate::substrate::indices::*;
-use crate::substrate::preimage::*;
-use crate::substrate::scheduler::*;
+use crate::substrate::*;
 
 impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
