@@ -1,7 +1,6 @@
 use hybrid_indexer::{shared::RuntimeIndexer, substrate::Indexer};
 
 use crate::polkadot::runtime_types::{
-    frame_system::pallet::Event as SystemEvent,
     pallet_balances::pallet::Event as BalancesEvent,
     pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
     pallet_democracy::pallet::Event as DemocracyEvent,
@@ -13,28 +12,6 @@ use crate::polkadot::runtime_types::{
     pallet_staking::pallet::pallet::Event as StakingEvent,
     pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
 };
-
-pub fn system_index_event<R: RuntimeIndexer>(
-    indexer: &Indexer<R>,
-    block_number: u32,
-    event_index: u32,
-    event: SystemEvent,
-) {
-    match event {
-        SystemEvent::ExtrinsicSuccess { .. } => {}
-        SystemEvent::ExtrinsicFailed { .. } => {}
-        SystemEvent::CodeUpdated {} => {}
-        SystemEvent::NewAccount { account } => {
-            indexer.index_event_account_id(account, block_number, event_index);
-        }
-        SystemEvent::KilledAccount { account } => {
-            indexer.index_event_account_id(account, block_number, event_index);
-        }
-        SystemEvent::Remarked { sender, .. } => {
-            indexer.index_event_account_id(sender, block_number, event_index);
-        }
-    }
-}
 
 pub fn scheduler_index_event<R: RuntimeIndexer>(
     _indexer: &Indexer<R>,

@@ -1,11 +1,14 @@
+#![feature(more_qualified_paths)]
 #[subxt::subxt(runtime_metadata_path = "metadata.scale")]
 pub mod polkadot {}
+use polkadot::runtime_types::frame_system::pallet::Event as SystemEvent;
 use polkadot::Event;
 
 struct PolkadotIndexer;
-
 pub mod substrate;
 use crate::substrate::*;
+
+use hybrid_indexer::*;
 
 impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
@@ -22,7 +25,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                 //println!("Event: {:?}", event);
                 match event {
                     Event::System(event) => {
-                        system_index_event(indexer, block_number, event_index, event);
+                        index_system_event![SystemEvent, event, indexer, block_number, event_index]
                     }
                     Event::Scheduler(event) => {
                         scheduler_index_event(indexer, block_number, event_index, event);
