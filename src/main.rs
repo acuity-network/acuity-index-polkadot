@@ -8,6 +8,7 @@ use crate::polkadot::runtime_types::{
     pallet_balances::pallet::Event as BalancesEvent,
     pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
     pallet_democracy::pallet::Event as DemocracyEvent,
+    pallet_election_provider_multi_phase::pallet::Event as ElectionProviderMultiPhaseEvent,
     pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
     pallet_fast_unstake::pallet::Event as FastUnstakeEvent,
     pallet_identity::pallet::Event as IdentityEvent,
@@ -100,7 +101,15 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Event::Bounties(event) => {}
             Event::ChildBounties(event) => {}
             Event::Tips(event) => {}
-            Event::ElectionProviderMultiPhase(event) => {}
+            Event::ElectionProviderMultiPhase(event) => {
+                index_election_provider_multi_phase_event![
+                    ElectionProviderMultiPhaseEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
+            }
             Event::VoterList(event) => {}
             Event::NominationPools(event) => {}
             Event::FastUnstake(event) => {
