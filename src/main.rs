@@ -63,10 +63,10 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                 index_democracy_event![DemocracyEvent, event, indexer, block_number, event_index]
             }
             Event::Council(event) => {
-                collective_index_event(indexer, block_number, event_index, event);
+                index_collective_event![CollectiveEvent, event, indexer, block_number, event_index]
             }
             Event::TechnicalCommittee(event) => {
-                collective2_index_event(indexer, block_number, event_index, event);
+                index_collective_event![CollectiveEvent2, event, indexer, block_number, event_index]
             }
             Event::PhragmenElection(event) => {
                 elections_phragmen_index_event(indexer, block_number, event_index, event);
