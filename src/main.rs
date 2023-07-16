@@ -18,6 +18,7 @@ use crate::polkadot::runtime_types::{
     pallet_proxy::pallet::Event as ProxyEvent,
     pallet_session::pallet::Event as SessionEvent,
     pallet_staking::pallet::pallet::Event as StakingEvent,
+    pallet_tips::pallet::Event as TipsEvent,
     pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
     pallet_treasury::pallet::Event as TreasuryEvent,
     pallet_vesting::pallet::Event as VestingEvent,
@@ -100,7 +101,9 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             }
             Event::Bounties(event) => {}
             Event::ChildBounties(event) => {}
-            Event::Tips(event) => {}
+            Event::Tips(event) => {
+                index_tips_event![TipsEvent, event, indexer, block_number, event_index]
+            }
             Event::ElectionProviderMultiPhase(event) => {
                 index_election_provider_multi_phase_event![
                     ElectionProviderMultiPhaseEvent,
