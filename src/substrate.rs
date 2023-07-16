@@ -4,21 +4,7 @@ use crate::polkadot::runtime_types::{
     pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
     pallet_democracy::pallet::Event as DemocracyEvent,
     pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
-    pallet_session::pallet::Event as SessionEvent,
 };
-
-pub fn session_index_event<R: RuntimeIndexer>(
-    indexer: &Indexer<R>,
-    block_number: u32,
-    event_index: u32,
-    event: SessionEvent,
-) {
-    match event {
-        SessionEvent::NewSession { session_index } => {
-            indexer.index_event_session_index(session_index, block_number, event_index);
-        }
-    }
-}
 
 pub fn democracy_index_event<R: RuntimeIndexer>(
     indexer: &Indexer<R>,
