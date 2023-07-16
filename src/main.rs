@@ -9,6 +9,7 @@ use crate::polkadot::runtime_types::{
     pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
     pallet_democracy::pallet::Event as DemocracyEvent,
     pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
+    pallet_identity::pallet::Event as IdentityEvent,
     pallet_indices::pallet::Event as IndicesEvent,
     pallet_preimage::pallet::Event as PreimageEvent,
     pallet_session::pallet::Event as SessionEvent,
@@ -83,9 +84,10 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Event::Vesting(event) => {
                 index_vesting_event![VestingEvent, event, indexer, block_number, event_index]
             }
+            Event::Identity(event) => {
+                index_identity_event![IdentityEvent, event, indexer, block_number, event_index]
+            }
             Event::Claims(event) => {}
-            Event::Utility(event) => {}
-            Event::Identity(event) => {}
             Event::Proxy(event) => {}
             Event::Multisig(event) => {}
             Event::Bounties(event) => {}
