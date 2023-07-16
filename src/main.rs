@@ -54,7 +54,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                 ]
             }
             Event::Staking(event) => {
-                staking_index_event(indexer, block_number, event_index, event);
+                index_staking_event![StakingEvent, event, indexer, block_number, event_index]
             }
             Event::Session(event) => {
                 session_index_event(indexer, block_number, event_index, event);

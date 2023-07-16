@@ -5,67 +5,7 @@ use crate::polkadot::runtime_types::{
     pallet_democracy::pallet::Event as DemocracyEvent,
     pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
     pallet_session::pallet::Event as SessionEvent,
-    pallet_staking::pallet::pallet::Event as StakingEvent,
 };
-
-pub fn staking_index_event<R: RuntimeIndexer>(
-    indexer: &Indexer<R>,
-    block_number: u32,
-    event_index: u32,
-    event: StakingEvent,
-) {
-    match event {
-        StakingEvent::EraPaid { era_index, .. } => {
-            indexer.index_event_era_index(era_index, block_number, event_index);
-        }
-        StakingEvent::Rewarded { stash, .. } => {
-            indexer.index_event_account_id(stash, block_number, event_index);
-        }
-        StakingEvent::Slashed { staker, .. } => {
-            indexer.index_event_account_id(staker, block_number, event_index);
-        }
-        StakingEvent::SlashReported {
-            validator,
-            fraction: _,
-            slash_era,
-        } => {
-            indexer.index_event_account_id(validator, block_number, event_index);
-            indexer.index_event_era_index(slash_era, block_number, event_index);
-        }
-        StakingEvent::OldSlashingReportDiscarded { session_index } => {
-            indexer.index_event_session_index(session_index, block_number, event_index);
-        }
-        StakingEvent::StakersElected => {}
-        StakingEvent::Bonded { stash, .. } => {
-            indexer.index_event_account_id(stash, block_number, event_index);
-        }
-        StakingEvent::Unbonded { stash, .. } => {
-            indexer.index_event_account_id(stash, block_number, event_index);
-        }
-        StakingEvent::Withdrawn { stash, .. } => {
-            indexer.index_event_account_id(stash, block_number, event_index);
-        }
-        StakingEvent::Kicked { nominator, stash } => {
-            indexer.index_event_account_id(nominator, block_number, event_index);
-            indexer.index_event_account_id(stash, block_number, event_index);
-        }
-        StakingEvent::StakingElectionFailed => {}
-        StakingEvent::Chilled { stash } => {
-            indexer.index_event_account_id(stash, block_number, event_index);
-        }
-        StakingEvent::PayoutStarted {
-            era_index,
-            validator_stash,
-        } => {
-            indexer.index_event_era_index(era_index, block_number, event_index);
-            indexer.index_event_account_id(validator_stash, block_number, event_index);
-        }
-        StakingEvent::ValidatorPrefsSet { stash, .. } => {
-            indexer.index_event_account_id(stash, block_number, event_index);
-        }
-        StakingEvent::ForceEra { .. } => {}
-    }
-}
 
 pub fn session_index_event<R: RuntimeIndexer>(
     indexer: &Indexer<R>,
