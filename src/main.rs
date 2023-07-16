@@ -31,8 +31,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
         event_index: u32,
         event: subxt::events::EventDetails<Self::RuntimeConfig>,
     ) -> Result<(), subxt::Error> {
-        let event = event.as_root_event::<Event>()?;
-        match event {
+        match event.as_root_event::<Event>()? {
             Event::System(event) => {
                 index_system_event![SystemEvent, event, indexer, block_number, event_index]
             }
@@ -46,7 +45,13 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                 index_balances_event![BalancesEvent, event, indexer, block_number, event_index]
             }
             Event::TransactionPayment(event) => {
-                transaction_payment_index_event(indexer, block_number, event_index, event);
+                index_transaction_payment_event![
+                    TransactionPaymentEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
             }
             Event::Staking(event) => {
                 staking_index_event(indexer, block_number, event_index, event);

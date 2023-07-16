@@ -6,21 +6,7 @@ use crate::polkadot::runtime_types::{
     pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
     pallet_session::pallet::Event as SessionEvent,
     pallet_staking::pallet::pallet::Event as StakingEvent,
-    pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
 };
-
-pub fn transaction_payment_index_event<R: RuntimeIndexer>(
-    indexer: &Indexer<R>,
-    block_number: u32,
-    event_index: u32,
-    event: TransactionPaymentEvent,
-) {
-    match event {
-        TransactionPaymentEvent::TransactionFeePaid { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-    }
-}
 
 pub fn staking_index_event<R: RuntimeIndexer>(
     indexer: &Indexer<R>,
