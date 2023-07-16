@@ -40,7 +40,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                 index_preimage_event![PreimageEvent, event, indexer, block_number, event_index]
             }
             Event::Indices(event) => {
-                indices_index_event(indexer, block_number, event_index, event);
+                index_indices_event![IndicesEvent, event, indexer, block_number, event_index]
             }
             Event::Balances(event) => {
                 balances_index_event(indexer, block_number, event_index, event);

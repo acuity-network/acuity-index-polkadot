@@ -5,32 +5,10 @@ use crate::polkadot::runtime_types::{
     pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
     pallet_democracy::pallet::Event as DemocracyEvent,
     pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
-    pallet_indices::pallet::Event as IndicesEvent,
     pallet_session::pallet::Event as SessionEvent,
     pallet_staking::pallet::pallet::Event as StakingEvent,
     pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
 };
-
-pub fn indices_index_event<R: RuntimeIndexer>(
-    indexer: &Indexer<R>,
-    block_number: u32,
-    event_index: u32,
-    event: IndicesEvent,
-) {
-    match event {
-        IndicesEvent::IndexAssigned { who, index } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-            indexer.index_event_account_index(index, block_number, event_index);
-        }
-        IndicesEvent::IndexFreed { index } => {
-            indexer.index_event_account_index(index, block_number, event_index);
-        }
-        IndicesEvent::IndexFrozen { index, who } => {
-            indexer.index_event_account_index(index, block_number, event_index);
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-    }
-}
 
 pub fn balances_index_event<R: RuntimeIndexer>(
     indexer: &Indexer<R>,
