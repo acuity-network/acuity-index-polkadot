@@ -1,7 +1,6 @@
 use hybrid_indexer::{shared::RuntimeIndexer, substrate::Indexer};
 
 use crate::polkadot::runtime_types::{
-    pallet_balances::pallet::Event as BalancesEvent,
     pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
     pallet_democracy::pallet::Event as DemocracyEvent,
     pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
@@ -9,77 +8,6 @@ use crate::polkadot::runtime_types::{
     pallet_staking::pallet::pallet::Event as StakingEvent,
     pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
 };
-
-pub fn balances_index_event<R: RuntimeIndexer>(
-    indexer: &Indexer<R>,
-    block_number: u32,
-    event_index: u32,
-    event: BalancesEvent,
-) {
-    match event {
-        BalancesEvent::Endowed { account, .. } => {
-            indexer.index_event_account_id(account, block_number, event_index);
-        }
-        BalancesEvent::DustLost { account, .. } => {
-            indexer.index_event_account_id(account, block_number, event_index);
-        }
-        BalancesEvent::Transfer { from, to, .. } => {
-            indexer.index_event_account_id(from, block_number, event_index);
-            indexer.index_event_account_id(to, block_number, event_index);
-        }
-        BalancesEvent::BalanceSet { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Reserved { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Unreserved { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::ReserveRepatriated { from, to, .. } => {
-            indexer.index_event_account_id(from, block_number, event_index);
-            indexer.index_event_account_id(to, block_number, event_index);
-        }
-        BalancesEvent::Deposit { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Withdraw { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Slashed { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Minted { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Burned { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Suspended { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Restored { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Upgraded { who } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Issued { .. } => {}
-        BalancesEvent::Rescinded { .. } => {}
-        BalancesEvent::Locked { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Unlocked { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Frozen { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-        BalancesEvent::Thawed { who, .. } => {
-            indexer.index_event_account_id(who, block_number, event_index);
-        }
-    }
-}
 
 pub fn transaction_payment_index_event<R: RuntimeIndexer>(
     indexer: &Indexer<R>,

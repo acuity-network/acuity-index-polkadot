@@ -43,7 +43,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                 index_indices_event![IndicesEvent, event, indexer, block_number, event_index]
             }
             Event::Balances(event) => {
-                balances_index_event(indexer, block_number, event_index, event);
+                index_balances_event![BalancesEvent, event, indexer, block_number, event_index]
             }
             Event::TransactionPayment(event) => {
                 transaction_payment_index_event(indexer, block_number, event_index, event);
@@ -51,12 +51,9 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Event::Staking(event) => {
                 staking_index_event(indexer, block_number, event_index, event);
             }
-            Event::Offences(_) => {}
             Event::Session(event) => {
                 session_index_event(indexer, block_number, event_index, event);
             }
-            Event::Grandpa(_) => {}
-            Event::ImOnline(_) => {}
             Event::Democracy(event) => {
                 democracy_index_event(indexer, block_number, event_index, event);
             }
