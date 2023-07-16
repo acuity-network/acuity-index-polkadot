@@ -14,6 +14,7 @@ use crate::polkadot::runtime_types::{
     pallet_session::pallet::Event as SessionEvent,
     pallet_staking::pallet::pallet::Event as StakingEvent,
     pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
+    pallet_treasury::pallet::Event as TreasuryEvent,
 };
 
 struct PolkadotIndexer;
@@ -75,8 +76,9 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                     event_index
                 ]
             }
-            Event::TechnicalMembership(event) => {}
-            Event::Treasury(event) => {}
+            Event::Treasury(event) => {
+                index_treasury_event![TreasuryEvent, event, indexer, block_number, event_index]
+            }
             Event::ConvictionVoting(event) => {}
             Event::Referenda(event) => {}
             Event::Whitelist(event) => {}
