@@ -12,6 +12,7 @@ use crate::polkadot::runtime_types::{
     pallet_identity::pallet::Event as IdentityEvent,
     pallet_indices::pallet::Event as IndicesEvent,
     pallet_preimage::pallet::Event as PreimageEvent,
+    pallet_proxy::pallet::Event as ProxyEvent,
     pallet_session::pallet::Event as SessionEvent,
     pallet_staking::pallet::pallet::Event as StakingEvent,
     pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
@@ -87,8 +88,10 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Event::Identity(event) => {
                 index_identity_event![IdentityEvent, event, indexer, block_number, event_index]
             }
+            Event::Proxy(event) => {
+                index_proxy_event![ProxyEvent, event, indexer, block_number, event_index]
+            }
             Event::Claims(event) => {}
-            Event::Proxy(event) => {}
             Event::Multisig(event) => {}
             Event::Bounties(event) => {}
             Event::ChildBounties(event) => {}
