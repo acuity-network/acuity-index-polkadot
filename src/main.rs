@@ -17,8 +17,6 @@ use crate::polkadot::runtime_types::{
 };
 
 struct PolkadotIndexer;
-pub mod substrate;
-use crate::substrate::*;
 
 use hybrid_indexer::*;
 
@@ -69,7 +67,13 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                 index_collective_event![CollectiveEvent2, event, indexer, block_number, event_index]
             }
             Event::PhragmenElection(event) => {
-                elections_phragmen_index_event(indexer, block_number, event_index, event);
+                index_elections_phragmen_event![
+                    ElectionsPhragmenEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
             }
             Event::TechnicalMembership(event) => {}
             Event::Treasury(event) => {}
