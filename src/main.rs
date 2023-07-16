@@ -1,8 +1,20 @@
 #![feature(more_qualified_paths)]
 #[subxt::subxt(runtime_metadata_path = "metadata.scale")]
 pub mod polkadot {}
-use polkadot::runtime_types::frame_system::pallet::Event as SystemEvent;
 use polkadot::Event;
+
+use crate::polkadot::runtime_types::{
+    frame_system::pallet::Event as SystemEvent,
+    pallet_balances::pallet::Event as BalancesEvent,
+    pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
+    pallet_democracy::pallet::Event as DemocracyEvent,
+    pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
+    pallet_indices::pallet::Event as IndicesEvent,
+    pallet_preimage::pallet::Event as PreimageEvent,
+    pallet_session::pallet::Event as SessionEvent,
+    pallet_staking::pallet::pallet::Event as StakingEvent,
+    pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
+};
 
 struct PolkadotIndexer;
 pub mod substrate;
@@ -27,11 +39,14 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                     Event::System(event) => {
                         index_system_event![SystemEvent, event, indexer, block_number, event_index]
                     }
-                    Event::Scheduler(event) => {
-                        scheduler_index_event(indexer, block_number, event_index, event);
-                    }
                     Event::Preimage(event) => {
-                        preimage_index_event(indexer, block_number, event_index, event);
+                        index_preimage_event![
+                            PreimageEvent,
+                            event,
+                            indexer,
+                            block_number,
+                            event_index
+                        ]
                     }
                     Event::Indices(event) => {
                         indices_index_event(indexer, block_number, event_index, event);
@@ -91,6 +106,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                     Event::Crowdloan(event) => {}
                     Event::XcmPallet(event) => {}
                     Event::Ump(event) => {}
+                    _ => {}
                 }
             }
             Err(_) => {}

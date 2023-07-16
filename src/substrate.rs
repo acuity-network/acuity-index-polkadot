@@ -6,47 +6,10 @@ use crate::polkadot::runtime_types::{
     pallet_democracy::pallet::Event as DemocracyEvent,
     pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
     pallet_indices::pallet::Event as IndicesEvent,
-    pallet_preimage::pallet::Event as PreimageEvent,
-    pallet_scheduler::pallet::Event as SchedulerEvent,
     pallet_session::pallet::Event as SessionEvent,
     pallet_staking::pallet::pallet::Event as StakingEvent,
     pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
 };
-
-pub fn scheduler_index_event<R: RuntimeIndexer>(
-    _indexer: &Indexer<R>,
-    _block_number: u32,
-    _event_index: u32,
-    event: SchedulerEvent,
-) {
-    match event {
-        SchedulerEvent::Scheduled { .. } => {}
-        SchedulerEvent::Canceled { .. } => {}
-        SchedulerEvent::Dispatched { .. } => {}
-        SchedulerEvent::CallUnavailable { .. } => {}
-        SchedulerEvent::PeriodicFailed { .. } => {}
-        SchedulerEvent::PermanentlyOverweight { .. } => {}
-    }
-}
-
-pub fn preimage_index_event<R: RuntimeIndexer>(
-    indexer: &Indexer<R>,
-    block_number: u32,
-    event_index: u32,
-    event: PreimageEvent,
-) {
-    match event {
-        PreimageEvent::Noted { hash } => {
-            indexer.index_event_preimage_hash(hash.into(), block_number, event_index);
-        }
-        PreimageEvent::Requested { hash } => {
-            indexer.index_event_preimage_hash(hash.into(), block_number, event_index);
-        }
-        PreimageEvent::Cleared { hash } => {
-            indexer.index_event_preimage_hash(hash.into(), block_number, event_index);
-        }
-    }
-}
 
 pub fn indices_index_event<R: RuntimeIndexer>(
     indexer: &Indexer<R>,
