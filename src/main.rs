@@ -9,6 +9,7 @@ use crate::polkadot::runtime_types::{
     pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
     pallet_democracy::pallet::Event as DemocracyEvent,
     pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
+    pallet_fast_unstake::pallet::Event as FastUnstakeEvent,
     pallet_identity::pallet::Event as IdentityEvent,
     pallet_indices::pallet::Event as IndicesEvent,
     pallet_multisig::pallet::Event as MultisigEvent,
@@ -35,6 +36,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
         event: subxt::events::EventDetails<Self::RuntimeConfig>,
     ) -> Result<(), subxt::Error> {
         match event.as_root_event::<Event>()? {
+            // Substrate pallets.
             Event::System(event) => {
                 index_system_event![SystemEvent, event, indexer, block_number, event_index]
             }
@@ -95,14 +97,23 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Event::Multisig(event) => {
                 index_multisig_event![MultisigEvent, event, indexer, block_number, event_index]
             }
-            Event::Claims(event) => {}
             Event::Bounties(event) => {}
             Event::ChildBounties(event) => {}
             Event::Tips(event) => {}
             Event::ElectionProviderMultiPhase(event) => {}
             Event::VoterList(event) => {}
             Event::NominationPools(event) => {}
-            Event::FastUnstake(event) => {}
+            Event::FastUnstake(event) => {
+                index_fast_unstake_event![
+                    FastUnstakeEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
+            }
+            // Polkadot pallets.
+            Event::Claims(event) => {}
             Event::ParaInclusion(event) => {}
             Event::Paras(event) => {}
             Event::Hrmp(event) => {}
@@ -112,7 +123,6 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Event::Auctions(event) => {}
             Event::Crowdloan(event) => {}
             Event::XcmPallet(event) => {}
-            Event::Ump(event) => {}
             _ => {}
         };
         Ok(())
