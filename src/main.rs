@@ -60,7 +60,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                 index_session_event![SessionEvent, event, indexer, block_number, event_index]
             }
             Event::Democracy(event) => {
-                democracy_index_event(indexer, block_number, event_index, event);
+                index_democracy_event![DemocracyEvent, event, indexer, block_number, event_index]
             }
             Event::Council(event) => {
                 collective_index_event(indexer, block_number, event_index, event);
