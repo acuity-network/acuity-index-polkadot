@@ -5,7 +5,6 @@ macro_rules! index_claims_event {
             <$event_enum>::Claimed { who, .. } => {
                 $indexer.index_event_account_id(who, $block_number, $event_index);
             }
-            _ => {}
         }
     };
 }
@@ -39,7 +38,6 @@ macro_rules! index_paras_event {
             <$event_enum>::PvfCheckRejected(_, para_id) => {
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
             }
-            _ => {}
         }
     };
 }
@@ -55,7 +53,7 @@ macro_rules! index_hrmp_event {
             <$event_enum>::OpenChannelCanceled(by_parachain, ..) => {
                 $indexer.index_event_para_id(by_parachain.0, $block_number, $event_index);
             }
-            <$event_enum>::OpenChannelRequested(sender, recipient, ..) => {
+            <$event_enum>::OpenChannelAccepted(sender, recipient) => {
                 $indexer.index_event_para_id(sender.0, $block_number, $event_index);
                 $indexer.index_event_para_id(recipient.0, $block_number, $event_index);
             }
@@ -66,7 +64,6 @@ macro_rules! index_hrmp_event {
                 $indexer.index_event_para_id(sender.0, $block_number, $event_index);
                 $indexer.index_event_para_id(recipient.0, $block_number, $event_index);
             }
-            _ => {}
         }
     };
 }
@@ -90,6 +87,29 @@ macro_rules! index_disputes_event {
                 );
             }
             _ => {}
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! index_paras_registrar_event {
+    ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
+        match $event {
+            <$event_enum>::Registered { para_id, manager } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+                $indexer.index_event_account_id(manager, $block_number, $event_index);
+            }
+            <$event_enum>::Deregistered { para_id } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+            }
+            <$event_enum>::Reserved { para_id, who } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+                $indexer.index_event_account_id(who, $block_number, $event_index);
+            } /*
+              <$event_enum>::Swapped { para_id, other_id } => {
+                  $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+                  $indexer.index_event_para_id(other_id.0, $block_number, $event_index);
+              }*/
         }
     };
 }

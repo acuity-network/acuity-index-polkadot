@@ -26,7 +26,9 @@ use crate::polkadot::runtime_types::{
     pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
     pallet_treasury::pallet::Event as TreasuryEvent,
     pallet_vesting::pallet::Event as VestingEvent,
-    polkadot_runtime_common::claims::pallet::Event as ClaimsEvent,
+    polkadot_runtime_common::{
+        claims::pallet::Event as ClaimsEvent, paras_registrar::pallet::Event as ParasRegistrarEvent,
+    },
     polkadot_runtime_parachains::{
         disputes::pallet::Event as DisputesEvent, hrmp::pallet::Event as HrmpEvent,
         paras::pallet::Event as ParasEvent,
@@ -169,7 +171,15 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Event::ParasDisputes(event) => {
                 index_disputes_event![DisputesEvent, event, indexer, block_number, event_index]
             }
-            Event::Registrar(event) => {}
+            Event::Registrar(event) => {
+                index_paras_registrar_event![
+                    ParasRegistrarEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
+            }
             Event::Slots(event) => {}
             Event::Auctions(event) => {}
             Event::Crowdloan(event) => {}
