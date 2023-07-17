@@ -5,6 +5,7 @@ use polkadot::Event;
 
 use crate::polkadot::runtime_types::{
     frame_system::pallet::Event as SystemEvent,
+    pallet_bags_list::pallet::Event as BagsListEvent,
     pallet_balances::pallet::Event as BalancesEvent,
     pallet_bounties::pallet::Event as BountiesEvent,
     pallet_child_bounties::pallet::Event as ChildBountiesEvent,
@@ -125,7 +126,9 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
                     event_index
                 ]
             }
-            Event::VoterList(event) => {}
+            Event::VoterList(event) => {
+                index_bags_list_event![BagsListEvent, event, indexer, block_number, event_index]
+            }
             Event::NominationPools(event) => {}
             Event::FastUnstake(event) => {
                 index_fast_unstake_event![
