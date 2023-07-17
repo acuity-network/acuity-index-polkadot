@@ -128,3 +128,38 @@ macro_rules! index_slots_event {
         }
     };
 }
+
+#[macro_export]
+macro_rules! index_auctions_event {
+    ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
+        match $event {
+            <$event_enum>::AuctionStarted { auction_index, .. } => {
+                $indexer.index_event_auction_index(auction_index, $block_number, $event_index);
+            }
+            <$event_enum>::AuctionClosed { auction_index } => {
+                $indexer.index_event_auction_index(auction_index, $block_number, $event_index);
+            }
+            <$event_enum>::Reserved { bidder, .. } => {
+                $indexer.index_event_account_id(bidder, $block_number, $event_index);
+            }
+            <$event_enum>::Unreserved { bidder, .. } => {
+                $indexer.index_event_account_id(bidder, $block_number, $event_index);
+            }
+            <$event_enum>::ReserveConfiscated {
+                para_id, leaser, ..
+            } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+                $indexer.index_event_account_id(leaser, $block_number, $event_index);
+            }
+            <$event_enum>::BidAccepted {
+                bidder, para_id, ..
+            } => {
+                $indexer.index_event_account_id(bidder, $block_number, $event_index);
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+            }
+            <$event_enum>::WinningOffset { auction_index, .. } => {
+                $indexer.index_event_auction_index(auction_index, $block_number, $event_index);
+            }
+        }
+    };
+}
