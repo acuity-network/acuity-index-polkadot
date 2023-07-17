@@ -113,3 +113,18 @@ macro_rules! index_paras_registrar_event {
         }
     };
 }
+
+#[macro_export]
+macro_rules! index_slots_event {
+    ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
+        match $event {
+            <$event_enum>::Leased {
+                para_id, leaser, ..
+            } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+                $indexer.index_event_account_id(leaser, $block_number, $event_index);
+            }
+            _ => {}
+        }
+    };
+}
