@@ -17,6 +17,7 @@ use crate::polkadot::runtime_types::{
     pallet_identity::pallet::Event as IdentityEvent,
     pallet_indices::pallet::Event as IndicesEvent,
     pallet_multisig::pallet::Event as MultisigEvent,
+    pallet_nomination_pools::pallet::Event as NominationPoolsEvent,
     pallet_preimage::pallet::Event as PreimageEvent,
     pallet_proxy::pallet::Event as ProxyEvent,
     pallet_session::pallet::Event as SessionEvent,
@@ -129,7 +130,15 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Event::VoterList(event) => {
                 index_bags_list_event![BagsListEvent, event, indexer, block_number, event_index]
             }
-            Event::NominationPools(event) => {}
+            Event::NominationPools(event) => {
+                index_nomination_pools_event![
+                    NominationPoolsEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
+            }
             Event::FastUnstake(event) => {
                 index_fast_unstake_event![
                     FastUnstakeEvent,
