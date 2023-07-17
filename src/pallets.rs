@@ -30,13 +30,13 @@ macro_rules! index_paras_event {
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
                 $indexer.index_event_session_index(session_index, $block_number, $event_index);
             }
-            <$event_enum>::PvfCheckStarted(code_hash, para_id) => {
+            <$event_enum>::PvfCheckStarted(_, para_id) => {
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
             }
-            <$event_enum>::PvfCheckAccepted(code_hash, para_id) => {
+            <$event_enum>::PvfCheckAccepted(_, para_id) => {
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
             }
-            <$event_enum>::PvfCheckRejected(code_hash, para_id) => {
+            <$event_enum>::PvfCheckRejected(_, para_id) => {
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
             }
             _ => {}
@@ -65,6 +65,29 @@ macro_rules! index_hrmp_event {
             <$event_enum>::HrmpChannelForceOpened(sender, recipient, ..) => {
                 $indexer.index_event_para_id(sender.0, $block_number, $event_index);
                 $indexer.index_event_para_id(recipient.0, $block_number, $event_index);
+            }
+            _ => {}
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! index_disputes_event {
+    ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
+        match $event {
+            <$event_enum>::DisputeInitiated(candidate_hash, ..) => {
+                $indexer.index_event_candidate_hash(
+                    candidate_hash.0.into(),
+                    $block_number,
+                    $event_index,
+                );
+            }
+            <$event_enum>::DisputeConcluded(candidate_hash, ..) => {
+                $indexer.index_event_candidate_hash(
+                    candidate_hash.0.into(),
+                    $block_number,
+                    $event_index,
+                );
             }
             _ => {}
         }
