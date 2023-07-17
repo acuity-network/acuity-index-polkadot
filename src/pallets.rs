@@ -163,3 +163,48 @@ macro_rules! index_auctions_event {
         }
     };
 }
+
+#[macro_export]
+macro_rules! index_crowdloan_event {
+    ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
+        match $event {
+            <$event_enum>::Created { para_id } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+            }
+            <$event_enum>::Contributed {
+                who, fund_index, ..
+            } => {
+                $indexer.index_event_account_id(who, $block_number, $event_index);
+                $indexer.index_event_para_id(fund_index.0, $block_number, $event_index);
+            }
+            <$event_enum>::Withdrew {
+                who, fund_index, ..
+            } => {
+                $indexer.index_event_account_id(who, $block_number, $event_index);
+                $indexer.index_event_para_id(fund_index.0, $block_number, $event_index);
+            }
+            <$event_enum>::PartiallyRefunded { para_id } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+            }
+            <$event_enum>::AllRefunded { para_id } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+            }
+            <$event_enum>::Dissolved { para_id } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+            }
+            <$event_enum>::HandleBidResult { para_id, .. } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+            }
+            <$event_enum>::Edited { para_id } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+            }
+            <$event_enum>::MemoUpdated { who, para_id, .. } => {
+                $indexer.index_event_account_id(who, $block_number, $event_index);
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+            }
+            <$event_enum>::AddedToNewRaise { para_id } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+            }
+        }
+    };
+}
