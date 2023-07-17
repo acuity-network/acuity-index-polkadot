@@ -6,6 +6,7 @@ use polkadot::Event;
 use crate::polkadot::runtime_types::{
     frame_system::pallet::Event as SystemEvent,
     pallet_balances::pallet::Event as BalancesEvent,
+    pallet_bounties::pallet::Event as BountiesEvent,
     pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
     pallet_democracy::pallet::Event as DemocracyEvent,
     pallet_election_provider_multi_phase::pallet::Event as ElectionProviderMultiPhaseEvent,
@@ -99,7 +100,9 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Event::Multisig(event) => {
                 index_multisig_event![MultisigEvent, event, indexer, block_number, event_index]
             }
-            Event::Bounties(event) => {}
+            Event::Bounties(event) => {
+                index_bounties_event![BountiesEvent, event, indexer, block_number, event_index]
+            }
             Event::ChildBounties(event) => {}
             Event::Tips(event) => {
                 index_tips_event![TipsEvent, event, indexer, block_number, event_index]
