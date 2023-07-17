@@ -43,3 +43,30 @@ macro_rules! index_paras_event {
         }
     };
 }
+
+#[macro_export]
+macro_rules! index_hrmp_event {
+    ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
+        match $event {
+            <$event_enum>::OpenChannelRequested(sender, recipient, ..) => {
+                $indexer.index_event_para_id(sender.0, $block_number, $event_index);
+                $indexer.index_event_para_id(recipient.0, $block_number, $event_index);
+            }
+            <$event_enum>::OpenChannelCanceled(by_parachain, ..) => {
+                $indexer.index_event_para_id(by_parachain.0, $block_number, $event_index);
+            }
+            <$event_enum>::OpenChannelRequested(sender, recipient, ..) => {
+                $indexer.index_event_para_id(sender.0, $block_number, $event_index);
+                $indexer.index_event_para_id(recipient.0, $block_number, $event_index);
+            }
+            <$event_enum>::ChannelClosed(by_parachain, ..) => {
+                $indexer.index_event_para_id(by_parachain.0, $block_number, $event_index);
+            }
+            <$event_enum>::HrmpChannelForceOpened(sender, recipient, ..) => {
+                $indexer.index_event_para_id(sender.0, $block_number, $event_index);
+                $indexer.index_event_para_id(recipient.0, $block_number, $event_index);
+            }
+            _ => {}
+        }
+    };
+}
