@@ -27,6 +27,8 @@ pub struct Args {
 
 mod polkadot;
 use polkadot::PolkadotIndexer;
+mod kusama;
+use kusama::KusamaIndexer;
 mod pallets;
 
 #[tokio::main]
@@ -38,6 +40,14 @@ async fn main() {
         .clone()
         .unwrap_or_else(|| "wss://rpc.polkadot.io:443".to_string());
     // Start the indexer.
-    let _ =
-        hybrid_indexer::start::<PolkadotIndexer>(url, args.block_number, args.async_blocks).await;
+    let _ = match args.chain {
+        Chain::Polkadot => {
+            hybrid_indexer::start::<PolkadotIndexer>(url, args.block_number, args.async_blocks)
+                .await
+        }
+        Chain::Kusama => {
+            hybrid_indexer::start::<KusamaIndexer>(url, args.block_number, args.async_blocks).await
+        }
+        _ => Ok(()),
+    };
 }
