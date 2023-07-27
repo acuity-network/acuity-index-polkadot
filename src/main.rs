@@ -43,6 +43,22 @@ use hybrid_indexer::*;
 
 mod pallets;
 
+use clap::Parser;
+
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+pub struct Args {
+    /// URL of Substrate node to connect to.
+    #[arg(short, long)]
+    pub url: Option<String>,
+    /// Block number to start indexing from.
+    #[arg(short, long)]
+    pub block_number: Option<u32>,
+    /// How many blocks to query at the same time [128]
+    #[arg(short, long)]
+    pub async_blocks: Option<u32>,
+}
+
 impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
 
@@ -198,5 +214,13 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
 
 #[tokio::main]
 async fn main() {
-    let _ = hybrid_indexer::start::<PolkadotIndexer>().await;
+    // Check command line parameters.
+    let args = Args::parse();
+    let url = args
+        .url
+        .clone()
+        .unwrap_or_else(|| "wss://rpc.polkadot.io:443".to_string());
+    // Start the indexer.
+    let _ =
+        hybrid_indexer::start::<PolkadotIndexer>(url, args.block_number, args.async_blocks).await;
 }
