@@ -105,11 +105,11 @@ macro_rules! index_paras_registrar_event {
             <$event_enum>::Reserved { para_id, who } => {
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
                 $indexer.index_event_account_id(who, $block_number, $event_index);
-            } /*
-              <$event_enum>::Swapped { para_id, other_id } => {
-                  $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
-                  $indexer.index_event_para_id(other_id.0, $block_number, $event_index);
-              }*/
+            }
+            <$event_enum>::Swapped { para_id, other_id } => {
+                $indexer.index_event_para_id(para_id.0, $block_number, $event_index);
+                $indexer.index_event_para_id(other_id.0, $block_number, $event_index);
+            }
         }
     };
 }
