@@ -43,11 +43,21 @@ use hybrid_indexer::*;
 
 mod pallets;
 
-use clap::Parser;
+use clap::{Parser, ValueEnum};
+
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
+pub enum Chain {
+    Polkadot,
+    Kusama,
+    Rococo,
+    Westend,
+}
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
+    #[arg(short, long, value_enum, default_value_t = Chain::Polkadot)]
+    pub chain: Chain,
     /// URL of Substrate node to connect to.
     #[arg(short, long)]
     pub url: Option<String>,
