@@ -31,6 +31,8 @@ mod kusama;
 use kusama::KusamaIndexer;
 mod rococo;
 use rococo::RococoIndexer;
+mod westend;
+use westend::WestendIndexer;
 mod pallets;
 
 #[tokio::main]
@@ -53,6 +55,8 @@ async fn main() {
         Chain::Rococo => {
             hybrid_indexer::start::<RococoIndexer>(url, args.block_number, args.async_blocks).await
         }
-        _ => Ok(()),
+        Chain::Westend => {
+            hybrid_indexer::start::<WestendIndexer>(url, args.block_number, args.async_blocks).await
+        }
     };
 }

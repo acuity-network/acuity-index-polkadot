@@ -1,28 +1,25 @@
-#[subxt::subxt(runtime_metadata_path = "src/rococo/metadata.scale")]
-pub mod rococo_metadata {}
-use rococo_metadata::Event;
+#[subxt::subxt(runtime_metadata_path = "src/westend/metadata.scale")]
+pub mod westend_metadata {}
+use westend_metadata::Event;
 
-use rococo_metadata::runtime_types::{
+use westend_metadata::runtime_types::{
     frame_system::pallet::Event as SystemEvent,
+    pallet_bags_list::pallet::Event as BagsListEvent,
     pallet_balances::pallet::Event as BalancesEvent,
-    pallet_bounties::pallet::Event as BountiesEvent,
-    pallet_child_bounties::pallet::Event as ChildBountiesEvent,
-    pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
-    pallet_democracy::pallet::Event as DemocracyEvent,
-    pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
+    pallet_election_provider_multi_phase::pallet::Event as ElectionProviderMultiPhaseEvent,
+    pallet_fast_unstake::pallet::Event as FastUnstakeEvent,
     pallet_identity::pallet::Event as IdentityEvent,
     pallet_indices::pallet::Event as IndicesEvent,
     pallet_multisig::pallet::Event as MultisigEvent,
+    pallet_nomination_pools::pallet::Event as NominationPoolsEvent,
     pallet_preimage::pallet::Event as PreimageEvent,
     pallet_proxy::pallet::Event as ProxyEvent,
     pallet_session::pallet::Event as SessionEvent,
-    pallet_tips::pallet::Event as TipsEvent,
+    pallet_staking::pallet::pallet::Event as StakingEvent,
     pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
-    pallet_treasury::pallet::Event as TreasuryEvent,
     pallet_vesting::pallet::Event as VestingEvent,
     polkadot_runtime_common::{
-        auctions::pallet::Event as AuctionsEvent, claims::pallet::Event as ClaimsEvent,
-        crowdloan::pallet::Event as CrowdloanEvent,
+        auctions::pallet::Event as AuctionsEvent, crowdloan::pallet::Event as CrowdloanEvent,
         paras_registrar::pallet::Event as ParasRegistrarEvent, slots::pallet::Event as SlotsEvent,
     },
     polkadot_runtime_parachains::{
@@ -34,9 +31,9 @@ use rococo_metadata::runtime_types::{
 use crate::*;
 use hybrid_indexer::*;
 
-pub struct RococoIndexer;
+pub struct WestendIndexer;
 
-impl hybrid_indexer::shared::RuntimeIndexer for RococoIndexer {
+impl hybrid_indexer::shared::RuntimeIndexer for WestendIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
 
     fn process_event(
@@ -68,29 +65,11 @@ impl hybrid_indexer::shared::RuntimeIndexer for RococoIndexer {
                     event_index
                 ]
             }
+            Event::Staking(event) => {
+                index_staking_event![StakingEvent, event, indexer, block_number, event_index]
+            }
             Event::Session(event) => {
                 index_session_event![SessionEvent, event, indexer, block_number, event_index]
-            }
-            Event::Democracy(event) => {
-                index_democracy_event![DemocracyEvent, event, indexer, block_number, event_index]
-            }
-            Event::Council(event) => {
-                index_collective_event![CollectiveEvent, event, indexer, block_number, event_index]
-            }
-            Event::TechnicalCommittee(event) => {
-                index_collective_event![CollectiveEvent2, event, indexer, block_number, event_index]
-            }
-            Event::PhragmenElection(event) => {
-                index_elections_phragmen_event![
-                    ElectionsPhragmenEvent,
-                    event,
-                    indexer,
-                    block_number,
-                    event_index
-                ]
-            }
-            Event::Treasury(event) => {
-                index_treasury_event![TreasuryEvent, event, indexer, block_number, event_index]
             }
             Event::Vesting(event) => {
                 index_vesting_event![VestingEvent, event, indexer, block_number, event_index]
@@ -104,25 +83,37 @@ impl hybrid_indexer::shared::RuntimeIndexer for RococoIndexer {
             Event::Multisig(event) => {
                 index_multisig_event![MultisigEvent, event, indexer, block_number, event_index]
             }
-            Event::Bounties(event) => {
-                index_bounties_event![BountiesEvent, event, indexer, block_number, event_index]
-            }
-            Event::ChildBounties(event) => {
-                index_child_bounties_event![
-                    ChildBountiesEvent,
+            Event::ElectionProviderMultiPhase(event) => {
+                index_election_provider_multi_phase_event![
+                    ElectionProviderMultiPhaseEvent,
                     event,
                     indexer,
                     block_number,
                     event_index
                 ]
             }
-            Event::Tips(event) => {
-                index_tips_event![TipsEvent, event, indexer, block_number, event_index]
+            Event::VoterList(event) => {
+                index_bags_list_event![BagsListEvent, event, indexer, block_number, event_index]
+            }
+            Event::NominationPools(event) => {
+                index_nomination_pools_event![
+                    NominationPoolsEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
+            }
+            Event::FastUnstake(event) => {
+                index_fast_unstake_event![
+                    FastUnstakeEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
             }
             // Polkadot pallets.
-            Event::Claims(event) => {
-                index_claims_event![ClaimsEvent, event, indexer, block_number, event_index]
-            }
             Event::Paras(event) => {
                 index_paras_event![ParasEvent, event, indexer, block_number, event_index]
             }
