@@ -29,6 +29,8 @@ mod polkadot;
 use polkadot::PolkadotIndexer;
 mod kusama;
 use kusama::KusamaIndexer;
+mod rococo;
+use rococo::RococoIndexer;
 mod pallets;
 
 #[tokio::main]
@@ -47,6 +49,9 @@ async fn main() {
         }
         Chain::Kusama => {
             hybrid_indexer::start::<KusamaIndexer>(url, args.block_number, args.async_blocks).await
+        }
+        Chain::Rococo => {
+            hybrid_indexer::start::<RococoIndexer>(url, args.block_number, args.async_blocks).await
         }
         _ => Ok(()),
     };
