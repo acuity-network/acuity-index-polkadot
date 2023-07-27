@@ -42,7 +42,6 @@ struct PolkadotIndexer;
 use hybrid_indexer::*;
 
 mod pallets;
-use pallets::*;
 
 impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
@@ -191,7 +190,6 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Event::Crowdloan(event) => {
                 index_crowdloan_event![CrowdloanEvent, event, indexer, block_number, event_index]
             }
-            Event::XcmPallet(event) => {}
             _ => {}
         };
         Ok(())
