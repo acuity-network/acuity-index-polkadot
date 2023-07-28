@@ -40,6 +40,10 @@ pub struct KusamaIndexer;
 impl hybrid_indexer::shared::RuntimeIndexer for KusamaIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
 
+    fn get_name() -> &'static str {
+        "kusama"
+    }
+
     fn process_event(
         indexer: &hybrid_indexer::substrate::Indexer<Self>,
         block_number: u32,

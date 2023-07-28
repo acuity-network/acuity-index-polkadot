@@ -36,6 +36,10 @@ pub struct WestendIndexer;
 impl hybrid_indexer::shared::RuntimeIndexer for WestendIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
 
+    fn get_name() -> &'static str {
+        "westend"
+    }
+
     fn process_event(
         indexer: &hybrid_indexer::substrate::Indexer<Self>,
         block_number: u32,

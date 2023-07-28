@@ -39,6 +39,10 @@ pub struct RococoIndexer;
 impl hybrid_indexer::shared::RuntimeIndexer for RococoIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
 
+    fn get_name() -> &'static str {
+        "rococo"
+    }
+
     fn process_event(
         indexer: &hybrid_indexer::substrate::Indexer<Self>,
         block_number: u32,

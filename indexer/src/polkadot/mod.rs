@@ -44,6 +44,10 @@ pub struct PolkadotIndexer;
 impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
 
+    fn get_name() -> &'static str {
+        "polkadot"
+    }
+
     fn process_event(
         indexer: &hybrid_indexer::substrate::Indexer<Self>,
         block_number: u32,
