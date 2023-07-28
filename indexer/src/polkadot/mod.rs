@@ -48,6 +48,14 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
         "polkadot"
     }
 
+    fn get_url() -> &'static str {
+        "wss://rpc.polkadot.io:443"
+    }
+
+    fn get_start_block() -> u32 {
+        12876189
+    }
+
     fn process_event(
         indexer: &hybrid_indexer::substrate::Indexer<Self>,
         block_number: u32,

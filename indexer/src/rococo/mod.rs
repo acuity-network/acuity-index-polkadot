@@ -43,6 +43,14 @@ impl hybrid_indexer::shared::RuntimeIndexer for RococoIndexer {
         "rococo"
     }
 
+    fn get_url() -> &'static str {
+        "wss://rococo-rpc.polkadot.io:443"
+    }
+
+    fn get_start_block() -> u32 {
+        2750000
+    }
+
     fn process_event(
         indexer: &hybrid_indexer::substrate::Indexer<Self>,
         block_number: u32,

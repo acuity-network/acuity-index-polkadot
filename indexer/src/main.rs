@@ -39,24 +39,23 @@ mod pallets;
 async fn main() {
     // Check command line parameters.
     let args = Args::parse();
-    let url = args
-        .url
-        .clone()
-        .unwrap_or_else(|| "wss://rpc.polkadot.io:443".to_string());
     // Start the indexer.
     let _ = match args.chain {
         Chain::Polkadot => {
-            hybrid_indexer::start::<PolkadotIndexer>(url, args.block_number, args.async_blocks)
+            hybrid_indexer::start::<PolkadotIndexer>(args.url, args.block_number, args.async_blocks)
                 .await
         }
         Chain::Kusama => {
-            hybrid_indexer::start::<KusamaIndexer>(url, args.block_number, args.async_blocks).await
+            hybrid_indexer::start::<KusamaIndexer>(args.url, args.block_number, args.async_blocks)
+                .await
         }
         Chain::Rococo => {
-            hybrid_indexer::start::<RococoIndexer>(url, args.block_number, args.async_blocks).await
+            hybrid_indexer::start::<RococoIndexer>(args.url, args.block_number, args.async_blocks)
+                .await
         }
         Chain::Westend => {
-            hybrid_indexer::start::<WestendIndexer>(url, args.block_number, args.async_blocks).await
+            hybrid_indexer::start::<WestendIndexer>(args.url, args.block_number, args.async_blocks)
+                .await
         }
     };
 }
