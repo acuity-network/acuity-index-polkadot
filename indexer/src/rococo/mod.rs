@@ -1,34 +1,34 @@
-#[subxt::subxt(runtime_metadata_path = "src/rococo/metadata.scale")]
-pub mod rococo_metadata {}
-use rococo_metadata::Event;
-
-use rococo_metadata::runtime_types::{
-    frame_system::pallet::Event as SystemEvent,
-    pallet_balances::pallet::Event as BalancesEvent,
-    pallet_bounties::pallet::Event as BountiesEvent,
-    pallet_child_bounties::pallet::Event as ChildBountiesEvent,
-    pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
-    pallet_democracy::pallet::Event as DemocracyEvent,
-    pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
-    pallet_identity::pallet::Event as IdentityEvent,
-    pallet_indices::pallet::Event as IndicesEvent,
-    pallet_multisig::pallet::Event as MultisigEvent,
-    pallet_preimage::pallet::Event as PreimageEvent,
-    pallet_proxy::pallet::Event as ProxyEvent,
-    pallet_session::pallet::Event as SessionEvent,
-    pallet_tips::pallet::Event as TipsEvent,
-    pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
-    pallet_treasury::pallet::Event as TreasuryEvent,
-    pallet_vesting::pallet::Event as VestingEvent,
-    polkadot_runtime_common::{
-        auctions::pallet::Event as AuctionsEvent, claims::pallet::Event as ClaimsEvent,
-        crowdloan::pallet::Event as CrowdloanEvent,
-        paras_registrar::pallet::Event as ParasRegistrarEvent, slots::pallet::Event as SlotsEvent,
+use metadata::rococo_metadata::{
+    runtime_types::{
+        frame_system::pallet::Event as SystemEvent,
+        pallet_balances::pallet::Event as BalancesEvent,
+        pallet_bounties::pallet::Event as BountiesEvent,
+        pallet_child_bounties::pallet::Event as ChildBountiesEvent,
+        pallet_collective::pallet::{Event as CollectiveEvent, Event2 as CollectiveEvent2},
+        pallet_democracy::pallet::Event as DemocracyEvent,
+        pallet_elections_phragmen::pallet::Event as ElectionsPhragmenEvent,
+        pallet_identity::pallet::Event as IdentityEvent,
+        pallet_indices::pallet::Event as IndicesEvent,
+        pallet_multisig::pallet::Event as MultisigEvent,
+        pallet_preimage::pallet::Event as PreimageEvent,
+        pallet_proxy::pallet::Event as ProxyEvent,
+        pallet_session::pallet::Event as SessionEvent,
+        pallet_tips::pallet::Event as TipsEvent,
+        pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
+        pallet_treasury::pallet::Event as TreasuryEvent,
+        pallet_vesting::pallet::Event as VestingEvent,
+        polkadot_runtime_common::{
+            auctions::pallet::Event as AuctionsEvent, claims::pallet::Event as ClaimsEvent,
+            crowdloan::pallet::Event as CrowdloanEvent,
+            paras_registrar::pallet::Event as ParasRegistrarEvent,
+            slots::pallet::Event as SlotsEvent,
+        },
+        polkadot_runtime_parachains::{
+            disputes::pallet::Event as DisputesEvent, hrmp::pallet::Event as HrmpEvent,
+            paras::pallet::Event as ParasEvent,
+        },
     },
-    polkadot_runtime_parachains::{
-        disputes::pallet::Event as DisputesEvent, hrmp::pallet::Event as HrmpEvent,
-        paras::pallet::Event as ParasEvent,
-    },
+    Event,
 };
 
 use crate::*;

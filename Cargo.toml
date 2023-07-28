@@ -1,12 +1,6 @@
-[package]
-name = "polkadot-indexer"
-version = "0.1.0"
-edition = "2021"
+[workspace]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-tokio = { version = "1.28.2", features = ["macros", "rt", "rt-multi-thread"] }
-subxt = { git = "https://github.com/paritytech/subxt", branch = "master" }
-hybrid-indexer = { path = "../hybrid-indexer" }
-clap = { version = "4.3.19", features = ["derive"] }
+members = [
+    "metadata",
+    "indexer",
+]
