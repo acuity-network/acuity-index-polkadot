@@ -23,6 +23,9 @@ pub struct Args {
     /// How many blocks to query at the same time
     #[arg(short, long, default_value_t = 128)]
     pub async_blocks: u32,
+    /// Port to open for WebSocket queries.
+    #[arg(short, long, default_value_t = 8172)]
+    pub port: u16,
 }
 
 mod polkadot;
@@ -42,20 +45,40 @@ async fn main() {
     // Start the indexer.
     let _ = match args.chain {
         Chain::Polkadot => {
-            hybrid_indexer::start::<PolkadotIndexer>(args.url, args.block_number, args.async_blocks)
-                .await
+            hybrid_indexer::start::<PolkadotIndexer>(
+                args.url,
+                args.block_number,
+                args.async_blocks,
+                args.port,
+            )
+            .await
         }
         Chain::Kusama => {
-            hybrid_indexer::start::<KusamaIndexer>(args.url, args.block_number, args.async_blocks)
-                .await
+            hybrid_indexer::start::<KusamaIndexer>(
+                args.url,
+                args.block_number,
+                args.async_blocks,
+                args.port,
+            )
+            .await
         }
         Chain::Rococo => {
-            hybrid_indexer::start::<RococoIndexer>(args.url, args.block_number, args.async_blocks)
-                .await
+            hybrid_indexer::start::<RococoIndexer>(
+                args.url,
+                args.block_number,
+                args.async_blocks,
+                args.port,
+            )
+            .await
         }
         Chain::Westend => {
-            hybrid_indexer::start::<WestendIndexer>(args.url, args.block_number, args.async_blocks)
-                .await
+            hybrid_indexer::start::<WestendIndexer>(
+                args.url,
+                args.block_number,
+                args.async_blocks,
+                args.port,
+            )
+            .await
         }
     };
 }
