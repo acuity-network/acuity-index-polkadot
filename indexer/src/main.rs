@@ -20,9 +20,9 @@ pub struct Args {
     /// Block number to start indexing from.
     #[arg(short, long)]
     pub block_number: Option<u32>,
-    /// How many blocks to query at the same time [128]
-    #[arg(short, long)]
-    pub async_blocks: Option<u32>,
+    /// How many blocks to query at the same time
+    #[arg(short, long, default_value_t = 128)]
+    pub async_blocks: u32,
 }
 
 mod polkadot;
