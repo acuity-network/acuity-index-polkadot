@@ -21,7 +21,7 @@ pub struct Args {
     #[arg(short, long)]
     pub block_number: Option<u32>,
     /// How many blocks to query at the same time
-    #[arg(short, long, default_value_t = 128)]
+    #[arg(short, long, default_value_t = 64)]
     pub async_blocks: u32,
     /// Port to open for WebSocket queries.
     #[arg(short, long, default_value_t = 8172)]

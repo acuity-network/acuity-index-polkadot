@@ -40,11 +40,11 @@ impl hybrid_indexer::shared::RuntimeIndexer for WestendIndexer {
         "westend"
     }
 
-    fn get_url() -> &'static str {
+    fn get_default_url() -> &'static str {
         "wss://westend-rpc.polkadot.io:443"
     }
 
-    fn get_start_block() -> u32 {
+    fn get_default_start_block() -> u32 {
         12900000
     }
 
