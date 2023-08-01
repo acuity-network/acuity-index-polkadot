@@ -1,0 +1,13 @@
+FROM rust:slim
+
+WORKDIR /usr/src/polkadot-indexer
+
+COPY . .
+
+RUN rustup default nightly
+
+RUN cargo build --release
+
+EXPOSE 8172 8173 8174 8175
+
+CMD cargo run --release -- --block-number 16650000
