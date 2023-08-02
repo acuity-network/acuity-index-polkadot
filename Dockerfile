@@ -10,4 +10,4 @@ RUN cargo build --release
 
 EXPOSE 8172 8173 8174 8175
 
-CMD cargo run --release -- --block-number 16650000
+ENTRYPOINT ["/usr/src/polkadot-indexer/target/release/polkadot-indexer"]
