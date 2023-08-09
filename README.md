@@ -42,7 +42,7 @@ First build the docker image:
 docker build .
 ```
 
-Run the docker image for each chain in a separate tab (replace `[image_hash]` with the hash of the docker image outputted at the end of the build):
+Run the docker image for each chain in a separate tab (replace `[image_hash]` with the hash of the docker image displayed at the end of the build):
 
 ```sh
 docker run --rm -p 8172:8172 [image_hash] -c polkadot -b 16730000 -p 8172
