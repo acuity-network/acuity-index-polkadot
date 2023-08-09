@@ -6,7 +6,7 @@ COPY . .
 
 RUN rustup default nightly
 
-RUN cargo build --release
+RUN cargo build --release -j 1
 
 EXPOSE 8172 8173 8174 8175
 
