@@ -1,4 +1,4 @@
-use metadata::westend_metadata::{
+use westend_metadata::westend_metadata::{
     runtime_types::{
         frame_system::pallet::Event as SystemEvent,
         pallet_bags_list::pallet::Event as BagsListEvent,

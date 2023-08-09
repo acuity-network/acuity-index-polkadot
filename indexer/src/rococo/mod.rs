@@ -1,4 +1,4 @@
-use metadata::rococo_metadata::{
+use rococo_metadata::rococo_metadata::{
     runtime_types::{
         frame_system::pallet::Event as SystemEvent,
         pallet_balances::pallet::Event as BalancesEvent,

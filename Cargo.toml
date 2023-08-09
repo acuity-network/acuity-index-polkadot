@@ -2,6 +2,9 @@
 resolver = "2"
 
 members = [
-    "metadata",
+    "polkadot-metadata",
+    "kusama-metadata",
+    "rococo-metadata",
+    "westend-metadata",
     "indexer",
 ]

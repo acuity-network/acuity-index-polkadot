@@ -1,4 +1,4 @@
-use metadata::kusama_metadata::{
+use kusama_metadata::kusama_metadata::{
     runtime_types::{
         frame_system::pallet::Event as SystemEvent,
         pallet_bags_list::pallet::Event as BagsListEvent,
