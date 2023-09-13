@@ -20,9 +20,9 @@ pub struct Args {
     /// Block number to start indexing from.
     #[arg(short, long)]
     pub block_number: Option<u32>,
-    /// How many blocks to query at the same time
+    /// Maximum number of concurrent requests to the chain.
     #[arg(short, long, default_value_t = 64)]
-    pub async_blocks: u32,
+    pub queue_depth: u32,
     /// Port to open for WebSocket queries.
     #[arg(short, long, default_value_t = 8172)]
     pub port: u16,
@@ -48,7 +48,7 @@ async fn main() {
             hybrid_indexer::start::<PolkadotIndexer>(
                 args.url,
                 args.block_number,
-                args.async_blocks,
+                args.queue_depth,
                 args.port,
             )
             .await
@@ -57,7 +57,7 @@ async fn main() {
             hybrid_indexer::start::<KusamaIndexer>(
                 args.url,
                 args.block_number,
-                args.async_blocks,
+                args.queue_depth,
                 args.port,
             )
             .await
@@ -66,7 +66,7 @@ async fn main() {
             hybrid_indexer::start::<RococoIndexer>(
                 args.url,
                 args.block_number,
-                args.async_blocks,
+                args.queue_depth,
                 args.port,
             )
             .await
@@ -75,7 +75,7 @@ async fn main() {
             hybrid_indexer::start::<WestendIndexer>(
                 args.url,
                 args.block_number,
-                args.async_blocks,
+                args.queue_depth,
                 args.port,
             )
             .await

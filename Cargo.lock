@@ -1257,8 +1257,7 @@ checksum = "df3b46402a9d5adb4c86a0cf463f42e19994e3ee891101b1841f30a545cb49a9"
 [[package]]
 name = "hybrid-indexer"
 version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "868d065b7b2f20775da3bde403fae0eb246fffb7c0b16da3eb1eabf2a33205cc"
+source = "git+https://github.com/hybrid-explorer/hybrid-indexer#6fbd398c6e589e70b471680465fa13e7ae4e672b"
 dependencies = [
  "base58",
  "blake2",
