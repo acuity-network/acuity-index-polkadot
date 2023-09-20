@@ -22,7 +22,7 @@ pub struct Args {
     pub block_number: Option<u32>,
     /// Maximum number of concurrent requests to the chain.
     #[arg(short, long, default_value_t = 64)]
-    pub queue_depth: u32,
+    pub queue_depth: u8,
     /// Port to open for WebSocket queries.
     #[arg(short, long, default_value_t = 8172)]
     pub port: u16,
