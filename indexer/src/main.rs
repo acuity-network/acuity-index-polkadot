@@ -12,18 +12,22 @@ pub enum Chain {
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
+    /// Chain to index
     #[arg(short, long, value_enum, default_value_t = Chain::Polkadot)]
     pub chain: Chain,
-    /// URL of Substrate node to connect to.
+    /// Database path
+    #[arg(short, long)]
+    pub db_path: Option<String>,
+    /// URL of Substrate node to connect to
     #[arg(short, long)]
     pub url: Option<String>,
-    /// Block number to start indexing from.
+    /// Block number to start indexing from
     #[arg(short, long)]
     pub block_number: Option<u32>,
-    /// Maximum number of concurrent requests to the chain.
+    /// Maximum number of concurrent requests to the chain
     #[arg(short, long, default_value_t = 64)]
     pub queue_depth: u8,
-    /// Port to open for WebSocket queries.
+    /// Port to open for WebSocket queries
     #[arg(short, long, default_value_t = 8172)]
     pub port: u16,
 }
@@ -46,6 +50,7 @@ async fn main() {
     let _ = match args.chain {
         Chain::Polkadot => {
             hybrid_indexer::start::<PolkadotIndexer>(
+                args.db_path,
                 args.url,
                 args.block_number,
                 args.queue_depth,
@@ -55,6 +60,7 @@ async fn main() {
         }
         Chain::Kusama => {
             hybrid_indexer::start::<KusamaIndexer>(
+                args.db_path,
                 args.url,
                 args.block_number,
                 args.queue_depth,
@@ -64,6 +70,7 @@ async fn main() {
         }
         Chain::Rococo => {
             hybrid_indexer::start::<RococoIndexer>(
+                args.db_path,
                 args.url,
                 args.block_number,
                 args.queue_depth,
@@ -73,6 +80,7 @@ async fn main() {
         }
         Chain::Westend => {
             hybrid_indexer::start::<WestendIndexer>(
+                args.db_path,
                 args.url,
                 args.block_number,
                 args.queue_depth,
