@@ -34,6 +34,8 @@ use rococo_metadata::rococo_metadata::{
 use crate::*;
 use hybrid_indexer::*;
 
+use hex_literal::hex;
+
 pub struct RococoIndexer;
 
 impl hybrid_indexer::shared::RuntimeIndexer for RococoIndexer {
@@ -41,6 +43,10 @@ impl hybrid_indexer::shared::RuntimeIndexer for RococoIndexer {
 
     fn get_name() -> &'static str {
         "rococo"
+    }
+
+    fn get_genesis_hash() -> <Self::RuntimeConfig as subxt::Config>::Hash {
+        hex!["6408de7737c59c238890533af25896a2c20608d8b380bb01029acb392781063e"].into()
     }
 
     fn get_default_url() -> &'static str {

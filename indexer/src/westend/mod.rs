@@ -31,6 +31,8 @@ use westend_metadata::westend_metadata::{
 use crate::*;
 use hybrid_indexer::*;
 
+use hex_literal::hex;
+
 pub struct WestendIndexer;
 
 impl hybrid_indexer::shared::RuntimeIndexer for WestendIndexer {
@@ -38,6 +40,10 @@ impl hybrid_indexer::shared::RuntimeIndexer for WestendIndexer {
 
     fn get_name() -> &'static str {
         "westend"
+    }
+
+    fn get_genesis_hash() -> <Self::RuntimeConfig as subxt::Config>::Hash {
+        hex!["e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e"].into()
     }
 
     fn get_default_url() -> &'static str {

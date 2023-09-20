@@ -35,6 +35,8 @@ use kusama_metadata::kusama_metadata::{
 use crate::*;
 use hybrid_indexer::*;
 
+use hex_literal::hex;
+
 pub struct KusamaIndexer;
 
 impl hybrid_indexer::shared::RuntimeIndexer for KusamaIndexer {
@@ -42,6 +44,10 @@ impl hybrid_indexer::shared::RuntimeIndexer for KusamaIndexer {
 
     fn get_name() -> &'static str {
         "kusama"
+    }
+
+    fn get_genesis_hash() -> <Self::RuntimeConfig as subxt::Config>::Hash {
+        hex!["b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe"].into()
     }
 
     fn get_default_url() -> &'static str {
