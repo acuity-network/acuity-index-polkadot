@@ -60,7 +60,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for RococoIndexer {
     fn process_event(
         indexer: &hybrid_indexer::substrate::Indexer<Self>,
         block_number: u32,
-        event_index: u32,
+        event_index: u16,
         event: subxt::events::EventDetails<Self::RuntimeConfig>,
     ) -> Result<(), subxt::Error> {
         match event.as_root_event::<Event>()? {
