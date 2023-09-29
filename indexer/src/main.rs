@@ -1,5 +1,6 @@
 #![feature(more_qualified_paths)]
 use clap::{Parser, ValueEnum};
+use clap_verbosity_flag::{InfoLevel, Verbosity};
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
 pub enum Chain {
@@ -25,11 +26,13 @@ pub struct Args {
     #[arg(short, long)]
     pub block_number: Option<u32>,
     /// Maximum number of concurrent requests to the chain
-    #[arg(short, long, default_value_t = 64)]
+    #[arg(long, default_value_t = 64)]
     pub queue_depth: u8,
     /// Port to open for WebSocket queries
     #[arg(short, long, default_value_t = 8172)]
     pub port: u16,
+    #[command(flatten)]
+    verbose: Verbosity<InfoLevel>,
 }
 
 mod polkadot;
@@ -46,6 +49,7 @@ mod pallets;
 async fn main() {
     // Check command line parameters.
     let args = Args::parse();
+    let log_level = args.verbose.log_level_filter();
     // Start the indexer.
     let _ = match args.chain {
         Chain::Polkadot => {
@@ -55,6 +59,7 @@ async fn main() {
                 args.block_number,
                 args.queue_depth,
                 args.port,
+                log_level,
             )
             .await
         }
@@ -65,6 +70,7 @@ async fn main() {
                 args.block_number,
                 args.queue_depth,
                 args.port,
+                log_level,
             )
             .await
         }
@@ -75,6 +81,7 @@ async fn main() {
                 args.block_number,
                 args.queue_depth,
                 args.port,
+                log_level,
             )
             .await
         }
@@ -85,6 +92,7 @@ async fn main() {
                 args.block_number,
                 args.queue_depth,
                 args.port,
+                log_level,
             )
             .await
         }

@@ -33,6 +33,7 @@ use kusama_metadata::kusama_metadata::{
 };
 
 use crate::*;
+use hybrid_indexer::shared::IndexError;
 use hybrid_indexer::*;
 
 use hex_literal::hex;
@@ -63,7 +64,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for KusamaIndexer {
         block_number: u32,
         event_index: u16,
         event: subxt::events::EventDetails<Self::RuntimeConfig>,
-    ) -> Result<(), subxt::Error> {
+    ) -> Result<(), IndexError> {
         match event.as_root_event::<Event>()? {
             // Substrate pallets.
             Event::System(event) => {

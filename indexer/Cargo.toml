@@ -15,3 +15,4 @@ subxt = "0.31.0"
 clap = { version = "4.3.19", features = ["derive"] }
 hybrid-indexer = { path = "../../hybrid-indexer" }
 hex-literal = "0.4.1"
+clap-verbosity-flag = "2.0.1"
