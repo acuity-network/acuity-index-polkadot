@@ -51,7 +51,7 @@ async fn main() {
     let args = Args::parse();
     let log_level = args.verbose.log_level_filter();
     // Start the indexer.
-    let _ = match args.chain {
+    match args.chain {
         Chain::Polkadot => {
             hybrid_indexer::start::<PolkadotIndexer>(
                 args.db_path,
