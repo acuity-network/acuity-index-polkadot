@@ -25,11 +25,14 @@ Compiling `metadata` can take a very long time.
 Usage: polkadot-indexer [OPTIONS]
 
 Options:
-  -c, --chain <CHAIN>                [default: polkadot] [possible values: polkadot, kusama, rococo, westend]
+  -c, --chain <CHAIN>                Chain to index [default: polkadot] [possible values: polkadot, kusama, rococo, westend]
+  -d, --db-path <DB_PATH>            Database path
   -u, --url <URL>                    URL of Substrate node to connect to
   -b, --block-number <BLOCK_NUMBER>  Block number to start indexing from
-  -a, --async-blocks <ASYNC_BLOCKS>  How many blocks to query at the same time [default: 64]
+      --queue-depth <QUEUE_DEPTH>    Maximum number of concurrent requests to the chain [default: 64]
   -p, --port <PORT>                  Port to open for WebSocket queries [default: 8172]
+  -v, --verbose...                   More output per occurrence
+  -q, --quiet...                     Less output per occurrence
   -h, --help                         Print help
   -V, --version                      Print version
 ```
