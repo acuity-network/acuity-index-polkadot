@@ -68,8 +68,8 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
         block_number: u32,
         event_index: u16,
         event: subxt::events::EventDetails<Self::RuntimeConfig>,
-    ) -> Result<(), IndexError> {
-        match event.as_root_event::<Event>()? {
+    ) -> Result<u32, IndexError> {
+        Ok(match event.as_root_event::<Event>()? {
             // Substrate pallets.
             Event::System(event) => {
                 index_system_event![SystemEvent, event, indexer, block_number, event_index]
@@ -207,8 +207,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
             Event::Crowdloan(event) => {
                 index_crowdloan_event![CrowdloanEvent, event, indexer, block_number, event_index]
             }
-            _ => {}
-        };
-        Ok(())
+            _ => 0,
+        })
     }
 }

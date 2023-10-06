@@ -15,4 +15,4 @@ subxt = "0.31.0"
 clap = { version = "4.3.19", features = ["derive"] }
 hex-literal = "0.4.1"
 clap-verbosity-flag = "2.0.1"
-hybrid-indexer = "0.2.0"
+hybrid-indexer = { path = "/home/jbrown/hybrid-indexer" }
