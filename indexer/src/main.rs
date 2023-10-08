@@ -22,9 +22,6 @@ pub struct Args {
     /// URL of Substrate node to connect to
     #[arg(short, long)]
     pub url: Option<String>,
-    /// Block number to start indexing from
-    #[arg(short, long)]
-    pub block_number: Option<u32>,
     /// Maximum number of concurrent requests to the chain
     #[arg(long, default_value_t = 64)]
     pub queue_depth: u8,
@@ -56,7 +53,6 @@ async fn main() {
             hybrid_indexer::start::<PolkadotIndexer>(
                 args.db_path,
                 args.url,
-                args.block_number,
                 args.queue_depth,
                 args.port,
                 log_level,
@@ -67,7 +63,6 @@ async fn main() {
             hybrid_indexer::start::<KusamaIndexer>(
                 args.db_path,
                 args.url,
-                args.block_number,
                 args.queue_depth,
                 args.port,
                 log_level,
@@ -78,7 +73,6 @@ async fn main() {
             hybrid_indexer::start::<RococoIndexer>(
                 args.db_path,
                 args.url,
-                args.block_number,
                 args.queue_depth,
                 args.port,
                 log_level,
@@ -89,7 +83,6 @@ async fn main() {
             hybrid_indexer::start::<WestendIndexer>(
                 args.db_path,
                 args.url,
-                args.block_number,
                 args.queue_depth,
                 args.port,
                 log_level,
