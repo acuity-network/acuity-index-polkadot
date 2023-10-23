@@ -51,12 +51,12 @@ impl hybrid_indexer::shared::RuntimeIndexer for KusamaIndexer {
         hex!["b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe"].into()
     }
 
-    fn get_default_url() -> &'static str {
-        "wss://kusama-rpc.polkadot.io:443"
+    fn get_versions() -> &'static [u32] {
+        &[0]
     }
 
-    fn get_default_start_block() -> u32 {
-        15100000
+    fn get_default_url() -> &'static str {
+        "wss://kusama-rpc.polkadot.io:443"
     }
 
     fn process_event(

@@ -50,12 +50,12 @@ impl hybrid_indexer::shared::RuntimeIndexer for RococoIndexer {
         hex!["6408de7737c59c238890533af25896a2c20608d8b380bb01029acb392781063e"].into()
     }
 
-    fn get_default_url() -> &'static str {
-        "wss://rococo-rpc.polkadot.io:443"
+    fn get_versions() -> &'static [u32] {
+        &[0]
     }
 
-    fn get_default_start_block() -> u32 {
-        2750000
+    fn get_default_url() -> &'static str {
+        "wss://rococo-rpc.polkadot.io:443"
     }
 
     fn process_event(

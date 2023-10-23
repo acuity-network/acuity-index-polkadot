@@ -47,12 +47,12 @@ impl hybrid_indexer::shared::RuntimeIndexer for WestendIndexer {
         hex!["e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e"].into()
     }
 
-    fn get_default_url() -> &'static str {
-        "wss://westend-rpc.polkadot.io:443"
+    fn get_versions() -> &'static [u32] {
+        &[0]
     }
 
-    fn get_default_start_block() -> u32 {
-        12900000
+    fn get_default_url() -> &'static str {
+        "wss://westend-rpc.polkadot.io:443"
     }
 
     fn process_event(
