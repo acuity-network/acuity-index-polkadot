@@ -8,6 +8,7 @@ pub enum Chain {
     Kusama,
     Rococo,
     Westend,
+    Polkadot2,
 }
 
 #[derive(Parser, Debug)]
@@ -34,6 +35,8 @@ pub struct Args {
 
 mod polkadot;
 use polkadot::PolkadotIndexer;
+mod polkadot2;
+use polkadot2::Polkadot2Indexer;
 mod kusama;
 use kusama::KusamaIndexer;
 mod rococo;
@@ -51,6 +54,16 @@ async fn main() {
     match args.chain {
         Chain::Polkadot => {
             hybrid_indexer::start::<PolkadotIndexer>(
+                args.db_path,
+                args.url,
+                args.queue_depth,
+                args.port,
+                log_level,
+            )
+            .await
+        }
+        Chain::Polkadot2 => {
+            hybrid_indexer::start::<Polkadot2Indexer>(
                 args.db_path,
                 args.url,
                 args.queue_depth,
