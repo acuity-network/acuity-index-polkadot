@@ -488,6 +488,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c3ac9f8b63eca6fd385229b3675f6cc0dc5c8a5c8a54a59d4f52ffd670d87b0c"
 
 [[package]]
+name = "byte-unit"
+version = "4.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "da78b32057b8fdfc352504708feeba7216dcd65a2c9ab02978cbd288d1279b6c"
+dependencies = [
+ "serde",
+ "utf8-width",
+]
+
+[[package]]
 name = "byteorder"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1357,12 +1367,11 @@ checksum = "9a3a5bfb195931eeb336b2a7b4d761daec841b97f947d34394601737a7bba5e4"
 [[package]]
 name = "hybrid-indexer"
 version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b2a2fec59db17e0dbe18f62f4f4a89b7ae59d9108ba4f038a0932e35b5f188b5"
 dependencies = [
  "ahash 0.8.6",
  "base58",
  "blake2",
+ "byte-unit",
  "byteorder",
  "env_logger",
  "futures",
@@ -2063,6 +2072,7 @@ checksum = "14e6ab3f592e6fb464fc9712d8d6e6912de6473954635fd76a589d832cffcbb0"
 name = "polkadot-indexer"
 version = "0.2.0"
 dependencies = [
+ "byte-unit",
  "clap",
  "clap-verbosity-flag",
  "hex-literal",
@@ -2070,6 +2080,7 @@ dependencies = [
  "kusama-metadata",
  "polkadot-metadata",
  "rococo-metadata",
+ "sled",
  "subxt",
  "tokio",
  "westend-metadata",
@@ -3427,6 +3438,12 @@ name = "utf-8"
 version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "09cc8ee72d2a9becf2f2febe0205bbed8fc6615b7cb429ad062dc7b7ddd036a9"
+
+[[package]]
+name = "utf8-width"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5190c9442dcdaf0ddd50f37420417d219ae5261bbf5db120d0f9bab996c9cba1"
 
 [[package]]
 name = "utf8parse"

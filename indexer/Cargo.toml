@@ -17,3 +17,4 @@ hex-literal = "0.4.1"
 clap-verbosity-flag = "2.0.1"
 hybrid-indexer = { path = "../../hybrid-indexer" }
 sled = { version = "0.34.7", default-features = false }
+byte-unit = "4.0.19"

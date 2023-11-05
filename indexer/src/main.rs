@@ -1,4 +1,5 @@
 #![feature(more_qualified_paths)]
+use byte_unit::Byte;
 use clap::{Parser, ValueEnum};
 use clap_verbosity_flag::{InfoLevel, Verbosity};
 
@@ -35,8 +36,11 @@ pub struct Args {
     #[arg(short, long)]
     pub db_path: Option<String>,
     /// Database mode
-    #[arg(short, long, value_enum, default_value_t = DbMode::LowSpace)]
+    #[arg(long, value_enum, default_value_t = DbMode::LowSpace)]
     pub db_mode: DbMode,
+    /// Maximum size in bytes for the system page cache
+    #[arg(long, default_value = "1024.00 MiB")]
+    pub db_cache_capacity: String,
     /// URL of Substrate node to connect to
     #[arg(short, long)]
     pub url: Option<String>,
@@ -64,6 +68,11 @@ mod pallets;
 async fn main() {
     // Check command line parameters.
     let args = Args::parse();
+    let db_cache_capacity = Byte::from_str(args.db_cache_capacity)
+        .unwrap()
+        .get_bytes()
+        .try_into()
+        .unwrap();
     let log_level = args.verbose.log_level_filter();
     // Start the indexer.
     match args.chain {
@@ -71,6 +80,7 @@ async fn main() {
             hybrid_indexer::start::<PolkadotIndexer>(
                 args.db_path,
                 args.db_mode.into(),
+                db_cache_capacity,
                 args.url,
                 args.queue_depth,
                 args.port,
@@ -82,6 +92,7 @@ async fn main() {
             hybrid_indexer::start::<KusamaIndexer>(
                 args.db_path,
                 args.db_mode.into(),
+                db_cache_capacity,
                 args.url,
                 args.queue_depth,
                 args.port,
@@ -93,6 +104,7 @@ async fn main() {
             hybrid_indexer::start::<RococoIndexer>(
                 args.db_path,
                 args.db_mode.into(),
+                db_cache_capacity,
                 args.url,
                 args.queue_depth,
                 args.port,
@@ -104,6 +116,7 @@ async fn main() {
             hybrid_indexer::start::<WestendIndexer>(
                 args.db_path,
                 args.db_mode.into(),
+                db_cache_capacity,
                 args.url,
                 args.queue_depth,
                 args.port,
