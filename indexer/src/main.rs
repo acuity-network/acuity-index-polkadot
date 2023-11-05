@@ -8,7 +8,21 @@ pub enum Chain {
     Kusama,
     Rococo,
     Westend,
-    Polkadot2,
+}
+
+#[derive(Clone, ValueEnum, Debug)]
+pub enum DbMode {
+    LowSpace,
+    HighThroughput,
+}
+
+impl Into<sled::Mode> for DbMode {
+    fn into(self) -> sled::Mode {
+        match self {
+            DbMode::LowSpace => sled::Mode::LowSpace,
+            DbMode::HighThroughput => sled::Mode::HighThroughput,
+        }
+    }
 }
 
 #[derive(Parser, Debug)]
@@ -20,6 +34,9 @@ pub struct Args {
     /// Database path
     #[arg(short, long)]
     pub db_path: Option<String>,
+    /// Database mode
+    #[arg(short, long, value_enum, default_value_t = DbMode::LowSpace)]
+    pub db_mode: DbMode,
     /// URL of Substrate node to connect to
     #[arg(short, long)]
     pub url: Option<String>,
@@ -35,8 +52,6 @@ pub struct Args {
 
 mod polkadot;
 use polkadot::PolkadotIndexer;
-mod polkadot2;
-use polkadot2::Polkadot2Indexer;
 mod kusama;
 use kusama::KusamaIndexer;
 mod rococo;
@@ -55,16 +70,7 @@ async fn main() {
         Chain::Polkadot => {
             hybrid_indexer::start::<PolkadotIndexer>(
                 args.db_path,
-                args.url,
-                args.queue_depth,
-                args.port,
-                log_level,
-            )
-            .await
-        }
-        Chain::Polkadot2 => {
-            hybrid_indexer::start::<Polkadot2Indexer>(
-                args.db_path,
+                args.db_mode.into(),
                 args.url,
                 args.queue_depth,
                 args.port,
@@ -75,6 +81,7 @@ async fn main() {
         Chain::Kusama => {
             hybrid_indexer::start::<KusamaIndexer>(
                 args.db_path,
+                args.db_mode.into(),
                 args.url,
                 args.queue_depth,
                 args.port,
@@ -85,6 +92,7 @@ async fn main() {
         Chain::Rococo => {
             hybrid_indexer::start::<RococoIndexer>(
                 args.db_path,
+                args.db_mode.into(),
                 args.url,
                 args.queue_depth,
                 args.port,
@@ -95,6 +103,7 @@ async fn main() {
         Chain::Westend => {
             hybrid_indexer::start::<WestendIndexer>(
                 args.db_path,
+                args.db_mode.into(),
                 args.url,
                 args.queue_depth,
                 args.port,
