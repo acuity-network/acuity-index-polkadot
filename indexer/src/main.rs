@@ -47,6 +47,9 @@ pub struct Args {
     /// Maximum number of concurrent requests to the chain
     #[arg(long, default_value_t = 64)]
     pub queue_depth: u8,
+    /// Index event variants
+    #[arg(short, long, default_value_t = false)]
+    pub index_variant: bool,
     /// Port to open for WebSocket queries
     #[arg(short, long, default_value_t = 8172)]
     pub port: u16,
@@ -83,6 +86,7 @@ async fn main() {
                 db_cache_capacity,
                 args.url,
                 args.queue_depth,
+                args.index_variant,
                 args.port,
                 log_level,
             )
@@ -95,6 +99,7 @@ async fn main() {
                 db_cache_capacity,
                 args.url,
                 args.queue_depth,
+                args.index_variant,
                 args.port,
                 log_level,
             )
@@ -107,6 +112,7 @@ async fn main() {
                 db_cache_capacity,
                 args.url,
                 args.queue_depth,
+                args.index_variant,
                 args.port,
                 log_level,
             )
@@ -119,6 +125,7 @@ async fn main() {
                 db_cache_capacity,
                 args.url,
                 args.queue_depth,
+                args.index_variant,
                 args.port,
                 log_level,
             )
