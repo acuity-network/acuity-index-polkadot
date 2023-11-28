@@ -18,3 +18,5 @@ clap-verbosity-flag = "2.0.1"
 hybrid-indexer = { path = "../../hybrid-indexer" }
 sled = { version = "0.34.7", default-features = false }
 byte-unit = "4.0.19"
+serde = { version = "1.0.162", features = ["derive"] }
+zerocopy = "0.7.8"

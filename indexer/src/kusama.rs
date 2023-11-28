@@ -33,7 +33,6 @@ use kusama_metadata::kusama_metadata::{
 };
 
 use crate::*;
-use hybrid_indexer::shared::IndexError;
 use hybrid_indexer::*;
 
 use hex_literal::hex;
@@ -42,6 +41,7 @@ pub struct KusamaIndexer;
 
 impl hybrid_indexer::shared::RuntimeIndexer for KusamaIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
+    type ChainKey = ChainKey;
 
     fn get_name() -> &'static str {
         "kusama"

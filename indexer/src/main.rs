@@ -2,6 +2,9 @@
 use byte_unit::Byte;
 use clap::{Parser, ValueEnum};
 use clap_verbosity_flag::{InfoLevel, Verbosity};
+use hybrid_indexer::shared::*;
+use serde::{Deserialize, Serialize};
+use zerocopy::AsBytes;
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
 pub enum Chain {
@@ -23,6 +26,53 @@ impl Into<sled::Mode> for DbMode {
             DbMode::LowSpace => sled::Mode::LowSpace,
             DbMode::HighThroughput => sled::Mode::HighThroughput,
         }
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq, Hash)]
+#[serde(tag = "type", content = "value")]
+pub enum ChainKey {
+    AuctionIndex(u32),
+    CandidateHash(Bytes32),
+    ParaId(u32),
+}
+
+impl IndexKey for ChainKey {
+    fn write_db_key(
+        &self,
+        trees: &Trees,
+        block_number: u32,
+        event_index: u16,
+    ) -> Result<(), sled::Error> {
+        let block_number = block_number.into();
+        let event_index = event_index.into();
+        match self {
+            ChainKey::AuctionIndex(auction_index) => {
+                let key = U32Key {
+                    key: (*auction_index).into(),
+                    block_number,
+                    event_index,
+                };
+                trees.auction_index.insert(key.as_bytes(), &[])?
+            }
+            ChainKey::CandidateHash(candidate_hash) => {
+                let key = Bytes32Key {
+                    key: candidate_hash.0,
+                    block_number,
+                    event_index,
+                };
+                trees.candidate_hash.insert(key.as_bytes(), &[])?
+            }
+            ChainKey::ParaId(para_id) => {
+                let key = U32Key {
+                    key: (*para_id).into(),
+                    block_number,
+                    event_index,
+                };
+                trees.para_id.insert(key.as_bytes(), &[])?
+            }
+        };
+        Ok(())
     }
 }
 
