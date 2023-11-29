@@ -40,7 +40,7 @@ pub enum ChainKey {
 impl IndexKey for ChainKey {
     fn write_db_key(
         &self,
-        trees: &Trees,
+        trees: &Trees<ChainTrees>,
         block_number: u32,
         event_index: u16,
     ) -> Result<(), sled::Error> {
@@ -75,7 +75,7 @@ impl IndexKey for ChainKey {
         Ok(())
     }
 
-    fn get_key_events(&self, trees: &Trees) -> Vec<Event> {
+    fn get_key_events(&self, trees: &Trees<ChainTrees>) -> Vec<Event> {
         match self {
             ChainKey::AuctionIndex(auction_index) => {
                 get_events_u32(&trees.chain.auction_index, *auction_index)
