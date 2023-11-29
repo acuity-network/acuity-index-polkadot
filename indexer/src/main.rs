@@ -53,7 +53,7 @@ impl IndexKey for ChainKey {
                     block_number,
                     event_index,
                 };
-                trees.auction_index.insert(key.as_bytes(), &[])?
+                trees.substrate.auction_index.insert(key.as_bytes(), &[])?
             }
             ChainKey::CandidateHash(candidate_hash) => {
                 let key = Bytes32Key {
@@ -61,7 +61,7 @@ impl IndexKey for ChainKey {
                     block_number,
                     event_index,
                 };
-                trees.candidate_hash.insert(key.as_bytes(), &[])?
+                trees.substrate.candidate_hash.insert(key.as_bytes(), &[])?
             }
             ChainKey::ParaId(para_id) => {
                 let key = U32Key {
@@ -69,7 +69,7 @@ impl IndexKey for ChainKey {
                     block_number,
                     event_index,
                 };
-                trees.para_id.insert(key.as_bytes(), &[])?
+                trees.substrate.para_id.insert(key.as_bytes(), &[])?
             }
         };
         Ok(())
@@ -78,12 +78,12 @@ impl IndexKey for ChainKey {
     fn get_key_events(&self, trees: &Trees) -> Vec<Event> {
         match self {
             ChainKey::AuctionIndex(auction_index) => {
-                get_events_u32(&trees.auction_index, *auction_index)
+                get_events_u32(&trees.substrate.auction_index, *auction_index)
             }
             ChainKey::CandidateHash(candidate_hash) => {
-                get_events_bytes32(&trees.candidate_hash, candidate_hash)
+                get_events_bytes32(&trees.substrate.candidate_hash, candidate_hash)
             }
-            ChainKey::ParaId(para_id) => get_events_u32(&trees.para_id, *para_id),
+            ChainKey::ParaId(para_id) => get_events_u32(&trees.substrate.para_id, *para_id),
         }
     }
 }
