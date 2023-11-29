@@ -2,7 +2,7 @@
 use byte_unit::Byte;
 use clap::{Parser, ValueEnum};
 use clap_verbosity_flag::{InfoLevel, Verbosity};
-use hybrid_indexer::shared::*;
+use hybrid_indexer::{shared::*, websockets::*};
 use serde::{Deserialize, Serialize};
 use zerocopy::AsBytes;
 
@@ -73,6 +73,18 @@ impl IndexKey for ChainKey {
             }
         };
         Ok(())
+    }
+
+    fn get_key_events(&self, trees: &Trees) -> Vec<Event> {
+        match self {
+            ChainKey::AuctionIndex(auction_index) => {
+                get_events_u32(&trees.auction_index, *auction_index)
+            }
+            ChainKey::CandidateHash(candidate_hash) => {
+                get_events_bytes32(&trees.candidate_hash, candidate_hash)
+            }
+            ChainKey::ParaId(para_id) => get_events_u32(&trees.para_id, *para_id),
+        }
     }
 }
 
