@@ -4,6 +4,7 @@ use clap::{Parser, ValueEnum};
 use clap_verbosity_flag::{InfoLevel, Verbosity};
 use hybrid_indexer::{shared::*, websockets::*};
 use serde::{Deserialize, Serialize};
+use sled::{Db, Tree};
 use zerocopy::AsBytes;
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
@@ -29,6 +30,30 @@ impl Into<sled::Mode> for DbMode {
     }
 }
 
+#[derive(Clone, Debug)]
+pub struct ChainTrees {
+    pub auction_index: Tree,
+    pub candidate_hash: Tree,
+    pub para_id: Tree,
+}
+
+impl IndexTrees for ChainTrees {
+    fn open(db: &Db) -> Result<Self, sled::Error> {
+        Ok(ChainTrees {
+            auction_index: db.open_tree(b"auction_index")?,
+            candidate_hash: db.open_tree(b"candiate_hash")?,
+            para_id: db.open_tree(b"para_id")?,
+        })
+    }
+
+    fn flush(&self) -> Result<(), sled::Error> {
+        self.auction_index.flush()?;
+        self.candidate_hash.flush()?;
+        self.para_id.flush()?;
+        Ok(())
+    }
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq, Hash)]
 #[serde(tag = "type", content = "value")]
 pub enum ChainKey {
@@ -38,9 +63,11 @@ pub enum ChainKey {
 }
 
 impl IndexKey for ChainKey {
+    type ChainTrees = ChainTrees;
+
     fn write_db_key(
         &self,
-        trees: &Trees<ChainTrees>,
+        trees: &ChainTrees,
         block_number: u32,
         event_index: u16,
     ) -> Result<(), sled::Error> {
@@ -53,7 +80,7 @@ impl IndexKey for ChainKey {
                     block_number,
                     event_index,
                 };
-                trees.chain.auction_index.insert(key.as_bytes(), &[])?
+                trees.auction_index.insert(key.as_bytes(), &[])?
             }
             ChainKey::CandidateHash(candidate_hash) => {
                 let key = Bytes32Key {
@@ -61,7 +88,7 @@ impl IndexKey for ChainKey {
                     block_number,
                     event_index,
                 };
-                trees.chain.candidate_hash.insert(key.as_bytes(), &[])?
+                trees.candidate_hash.insert(key.as_bytes(), &[])?
             }
             ChainKey::ParaId(para_id) => {
                 let key = U32Key {
@@ -69,21 +96,21 @@ impl IndexKey for ChainKey {
                     block_number,
                     event_index,
                 };
-                trees.chain.para_id.insert(key.as_bytes(), &[])?
+                trees.para_id.insert(key.as_bytes(), &[])?
             }
         };
         Ok(())
     }
 
-    fn get_key_events(&self, trees: &Trees<ChainTrees>) -> Vec<Event> {
+    fn get_key_events(&self, trees: &ChainTrees) -> Vec<Event> {
         match self {
             ChainKey::AuctionIndex(auction_index) => {
-                get_events_u32(&trees.chain.auction_index, *auction_index)
+                get_events_u32(&trees.auction_index, *auction_index)
             }
             ChainKey::CandidateHash(candidate_hash) => {
-                get_events_bytes32(&trees.chain.candidate_hash, candidate_hash)
+                get_events_bytes32(&trees.candidate_hash, candidate_hash)
             }
-            ChainKey::ParaId(para_id) => get_events_u32(&trees.chain.para_id, *para_id),
+            ChainKey::ParaId(para_id) => get_events_u32(&trees.para_id, *para_id),
         }
     }
 }
