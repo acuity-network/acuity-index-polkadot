@@ -171,11 +171,19 @@ macro_rules! index_auctions_event {
     ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
         match $event {
             <$event_enum>::AuctionStarted { auction_index, .. } => {
-                $indexer.index_event_auction_index(auction_index, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::AuctionIndex(auction_index)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::AuctionClosed { auction_index } => {
-                $indexer.index_event_auction_index(auction_index, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::AuctionIndex(auction_index)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::Reserved { bidder, .. } => {
@@ -217,7 +225,11 @@ macro_rules! index_auctions_event {
                 2
             }
             <$event_enum>::WinningOffset { auction_index, .. } => {
-                $indexer.index_event_auction_index(auction_index, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::AuctionIndex(auction_index)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
         }
