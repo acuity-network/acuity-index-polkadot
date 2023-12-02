@@ -56,7 +56,11 @@ macro_rules! index_paras_event {
                     $block_number,
                     $event_index,
                 )?;
-                $indexer.index_event_session_index(session_index, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::SessionIndex(session_index)),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
             <$event_enum>::PvfCheckStarted(_, para_id) => {
