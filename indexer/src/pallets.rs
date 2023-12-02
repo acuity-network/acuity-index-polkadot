@@ -91,16 +91,16 @@ macro_rules! index_disputes_event {
     ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
         match $event {
             <$event_enum>::DisputeInitiated(candidate_hash, ..) => {
-                $indexer.index_event_candidate_hash(
-                    candidate_hash.0.into(),
+                $indexer.index_event(
+                    Key::Chain(ChainKey::CandidateHash(Bytes32(candidate_hash.0.into()))),
                     $block_number,
                     $event_index,
                 )?;
                 1
             }
             <$event_enum>::DisputeConcluded(candidate_hash, ..) => {
-                $indexer.index_event_candidate_hash(
-                    candidate_hash.0.into(),
+                $indexer.index_event(
+                    Key::Chain(ChainKey::CandidateHash(Bytes32(candidate_hash.0.into()))),
                     $block_number,
                     $event_index,
                 )?;
