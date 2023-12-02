@@ -3,7 +3,11 @@ macro_rules! index_claims_event {
     ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
         match $event {
             <$event_enum>::Claimed { who, .. } => {
-                $indexer.index_event_account_id(who, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(who.0))),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
         }
@@ -113,7 +117,11 @@ macro_rules! index_paras_registrar_event {
         match $event {
             <$event_enum>::Registered { para_id, manager } => {
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
-                $indexer.index_event_account_id(manager, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(manager.0))),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
             <$event_enum>::Deregistered { para_id } => {
@@ -122,7 +130,11 @@ macro_rules! index_paras_registrar_event {
             }
             <$event_enum>::Reserved { para_id, who } => {
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
-                $indexer.index_event_account_id(who, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(who.0))),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
             <$event_enum>::Swapped { para_id, other_id } => {
@@ -142,7 +154,11 @@ macro_rules! index_slots_event {
                 para_id, leaser, ..
             } => {
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
-                $indexer.index_event_account_id(leaser, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(leaser.0))),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
             _ => 0,
@@ -163,24 +179,40 @@ macro_rules! index_auctions_event {
                 1
             }
             <$event_enum>::Reserved { bidder, .. } => {
-                $indexer.index_event_account_id(bidder, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(bidder.0))),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::Unreserved { bidder, .. } => {
-                $indexer.index_event_account_id(bidder, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(bidder.0))),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::ReserveConfiscated {
                 para_id, leaser, ..
             } => {
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
-                $indexer.index_event_account_id(leaser, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(leaser.0))),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
             <$event_enum>::BidAccepted {
                 bidder, para_id, ..
             } => {
-                $indexer.index_event_account_id(bidder, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(bidder.0))),
+                    $block_number,
+                    $event_index,
+                )?;
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
                 2
             }
@@ -203,14 +235,22 @@ macro_rules! index_crowdloan_event {
             <$event_enum>::Contributed {
                 who, fund_index, ..
             } => {
-                $indexer.index_event_account_id(who, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(who.0))),
+                    $block_number,
+                    $event_index,
+                )?;
                 $indexer.index_event_para_id(fund_index.0, $block_number, $event_index)?;
                 2
             }
             <$event_enum>::Withdrew {
                 who, fund_index, ..
             } => {
-                $indexer.index_event_account_id(who, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(who.0))),
+                    $block_number,
+                    $event_index,
+                )?;
                 $indexer.index_event_para_id(fund_index.0, $block_number, $event_index)?;
                 2
             }
@@ -235,7 +275,11 @@ macro_rules! index_crowdloan_event {
                 1
             }
             <$event_enum>::MemoUpdated { who, para_id, .. } => {
-                $indexer.index_event_account_id(who, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(who.0))),
+                    $block_number,
+                    $event_index,
+                )?;
                 $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
                 2
             }
