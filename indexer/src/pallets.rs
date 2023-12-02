@@ -19,36 +19,68 @@ macro_rules! index_paras_event {
     ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
         match $event {
             <$event_enum>::CurrentCodeUpdated(para_id) => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::CurrentHeadUpdated(para_id) => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::CodeUpgradeScheduled(para_id) => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::NewHeadNoted(para_id) => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::ActionQueued(para_id, session_index) => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 $indexer.index_event_session_index(session_index, $block_number, $event_index)?;
                 2
             }
             <$event_enum>::PvfCheckStarted(_, para_id) => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::PvfCheckAccepted(_, para_id) => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::PvfCheckRejected(_, para_id) => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
         }
@@ -60,26 +92,58 @@ macro_rules! index_hrmp_event {
     ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
         match $event {
             <$event_enum>::OpenChannelRequested(sender, recipient, ..) => {
-                $indexer.index_event_para_id(sender.0, $block_number, $event_index)?;
-                $indexer.index_event_para_id(recipient.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(sender.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(recipient.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
             <$event_enum>::OpenChannelCanceled(by_parachain, ..) => {
-                $indexer.index_event_para_id(by_parachain.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(by_parachain.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::OpenChannelAccepted(sender, recipient) => {
-                $indexer.index_event_para_id(sender.0, $block_number, $event_index)?;
-                $indexer.index_event_para_id(recipient.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(sender.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(recipient.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
             <$event_enum>::ChannelClosed(by_parachain, ..) => {
-                $indexer.index_event_para_id(by_parachain.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(by_parachain.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::HrmpChannelForceOpened(sender, recipient, ..) => {
-                $indexer.index_event_para_id(sender.0, $block_number, $event_index)?;
-                $indexer.index_event_para_id(recipient.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(sender.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(recipient.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
         }
@@ -116,7 +180,11 @@ macro_rules! index_paras_registrar_event {
     ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
         match $event {
             <$event_enum>::Registered { para_id, manager } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 $indexer.index_event(
                     Key::Substrate(SubstrateKey::AccountId(Bytes32(manager.0))),
                     $block_number,
@@ -125,11 +193,19 @@ macro_rules! index_paras_registrar_event {
                 2
             }
             <$event_enum>::Deregistered { para_id } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::Reserved { para_id, who } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 $indexer.index_event(
                     Key::Substrate(SubstrateKey::AccountId(Bytes32(who.0))),
                     $block_number,
@@ -138,8 +214,16 @@ macro_rules! index_paras_registrar_event {
                 2
             }
             <$event_enum>::Swapped { para_id, other_id } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
-                $indexer.index_event_para_id(other_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(other_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
         }
@@ -153,7 +237,11 @@ macro_rules! index_slots_event {
             <$event_enum>::Leased {
                 para_id, leaser, ..
             } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 $indexer.index_event(
                     Key::Substrate(SubstrateKey::AccountId(Bytes32(leaser.0))),
                     $block_number,
@@ -205,7 +293,11 @@ macro_rules! index_auctions_event {
             <$event_enum>::ReserveConfiscated {
                 para_id, leaser, ..
             } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 $indexer.index_event(
                     Key::Substrate(SubstrateKey::AccountId(Bytes32(leaser.0))),
                     $block_number,
@@ -221,7 +313,11 @@ macro_rules! index_auctions_event {
                     $block_number,
                     $event_index,
                 )?;
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
             <$event_enum>::WinningOffset { auction_index, .. } => {
@@ -241,7 +337,11 @@ macro_rules! index_crowdloan_event {
     ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
         match $event {
             <$event_enum>::Created { para_id } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::Contributed {
@@ -252,7 +352,11 @@ macro_rules! index_crowdloan_event {
                     $block_number,
                     $event_index,
                 )?;
-                $indexer.index_event_para_id(fund_index.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(fund_index.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
             <$event_enum>::Withdrew {
@@ -263,27 +367,51 @@ macro_rules! index_crowdloan_event {
                     $block_number,
                     $event_index,
                 )?;
-                $indexer.index_event_para_id(fund_index.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(fund_index.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
             <$event_enum>::PartiallyRefunded { para_id } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::AllRefunded { para_id } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::Dissolved { para_id } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::HandleBidResult { para_id, .. } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::Edited { para_id } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
             <$event_enum>::MemoUpdated { who, para_id, .. } => {
@@ -292,11 +420,19 @@ macro_rules! index_crowdloan_event {
                     $block_number,
                     $event_index,
                 )?;
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 2
             }
             <$event_enum>::AddedToNewRaise { para_id } => {
-                $indexer.index_event_para_id(para_id.0, $block_number, $event_index)?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
                 1
             }
         }
