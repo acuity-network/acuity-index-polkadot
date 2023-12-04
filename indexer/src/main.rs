@@ -7,6 +7,9 @@ use serde::{Deserialize, Serialize};
 use sled::{Db, Tree};
 use zerocopy::AsBytes;
 
+#[cfg(test)]
+mod tests;
+
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
 pub enum Chain {
     Polkadot,
