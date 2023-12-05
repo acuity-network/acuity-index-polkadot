@@ -24,9 +24,9 @@ pub enum DbMode {
     HighThroughput,
 }
 
-impl Into<sled::Mode> for DbMode {
-    fn into(self) -> sled::Mode {
-        match self {
+impl From<DbMode> for sled::Mode {
+    fn from(val: DbMode) -> Self {
+        match val {
             DbMode::LowSpace => sled::Mode::LowSpace,
             DbMode::HighThroughput => sled::Mode::HighThroughput,
         }
