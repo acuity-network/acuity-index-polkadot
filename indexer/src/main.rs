@@ -5,6 +5,7 @@ use clap_verbosity_flag::{InfoLevel, Verbosity};
 use hybrid_indexer::{shared::*, websockets::*};
 use serde::{Deserialize, Serialize};
 use sled::{Db, Tree};
+use tracing_log::AsTrace;
 use zerocopy::AsBytes;
 
 #[cfg(test)]
@@ -168,7 +169,7 @@ async fn main() {
         .get_bytes()
         .try_into()
         .unwrap();
-    let log_level = args.verbose.log_level_filter();
+    let log_level = args.verbose.log_level_filter().as_trace();
     // Start the indexer.
     match args.chain {
         Chain::Polkadot => {
