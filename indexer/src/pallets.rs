@@ -95,7 +95,9 @@ macro_rules! index_paras_event {
 macro_rules! index_hrmp_event {
     ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
         match $event {
-            <$event_enum>::OpenChannelRequested(sender, recipient, ..) => {
+            <$event_enum>::OpenChannelRequested {
+                sender, recipient, ..
+            } => {
                 $indexer.index_event(
                     Key::Chain(ChainKey::ParaId(sender.0)),
                     $block_number,
@@ -108,7 +110,7 @@ macro_rules! index_hrmp_event {
                 )?;
                 2
             }
-            <$event_enum>::OpenChannelCanceled(by_parachain, ..) => {
+            <$event_enum>::OpenChannelCanceled { by_parachain, .. } => {
                 $indexer.index_event(
                     Key::Chain(ChainKey::ParaId(by_parachain.0)),
                     $block_number,
@@ -116,7 +118,7 @@ macro_rules! index_hrmp_event {
                 )?;
                 1
             }
-            <$event_enum>::OpenChannelAccepted(sender, recipient) => {
+            <$event_enum>::OpenChannelAccepted { sender, recipient } => {
                 $indexer.index_event(
                     Key::Chain(ChainKey::ParaId(sender.0)),
                     $block_number,
@@ -129,7 +131,7 @@ macro_rules! index_hrmp_event {
                 )?;
                 2
             }
-            <$event_enum>::ChannelClosed(by_parachain, ..) => {
+            <$event_enum>::ChannelClosed { by_parachain, .. } => {
                 $indexer.index_event(
                     Key::Chain(ChainKey::ParaId(by_parachain.0)),
                     $block_number,
@@ -137,7 +139,9 @@ macro_rules! index_hrmp_event {
                 )?;
                 1
             }
-            <$event_enum>::HrmpChannelForceOpened(sender, recipient, ..) => {
+            <$event_enum>::HrmpChannelForceOpened {
+                sender, recipient, ..
+            } => {
                 $indexer.index_event(
                     Key::Chain(ChainKey::ParaId(sender.0)),
                     $block_number,
@@ -150,6 +154,8 @@ macro_rules! index_hrmp_event {
                 )?;
                 2
             }
+            <$event_enum>::HrmpSystemChannelOpened { .. } => 0,
+            <$event_enum>::OpenChannelDepositsUpdated { .. } => 0,
         }
     };
 }
