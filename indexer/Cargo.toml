@@ -19,5 +19,5 @@ sled = { version = "0.34.7", default-features = false }
 byte-unit = "4.0.19"
 serde = { version = "1.0.162", features = ["derive"] }
 zerocopy = "0.7.8"
-hybrid-indexer = { path = "../../hybrid-indexer" }
 tracing-log = "0.2.0"
+hybrid-indexer = "0.5.2"
