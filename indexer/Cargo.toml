@@ -20,4 +20,4 @@ byte-unit = "4.0.19"
 serde = { version = "1.0.162", features = ["derive"] }
 zerocopy = "0.7.8"
 tracing-log = "0.2.0"
-hybrid-indexer = "0.5.2"
+hybrid-indexer = "0.5.3"
