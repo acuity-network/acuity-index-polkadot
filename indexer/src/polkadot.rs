@@ -33,13 +33,13 @@ use polkadot_metadata::polkadot_metadata::{
 };
 
 use crate::*;
-use hybrid_indexer::*;
+use acuity_index_substrate::*;
 
 use hex_literal::hex;
 
 pub struct PolkadotIndexer;
 
-impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
+impl acuity_index_substrate::shared::RuntimeIndexer for PolkadotIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
     type ChainKey = ChainKey;
 
@@ -60,7 +60,7 @@ impl hybrid_indexer::shared::RuntimeIndexer for PolkadotIndexer {
     }
 
     fn process_event(
-        indexer: &hybrid_indexer::substrate::Indexer<Self>,
+        indexer: &acuity_index_substrate::substrate::Indexer<Self>,
         block_number: u32,
         event_index: u16,
         event: subxt::events::EventDetails<Self::RuntimeConfig>,

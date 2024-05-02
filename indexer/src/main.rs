@@ -1,8 +1,8 @@
 #![feature(more_qualified_paths)]
+use acuity_index_substrate::{shared::*, websockets::*};
 use byte_unit::Byte;
 use clap::{Parser, ValueEnum};
 use clap_verbosity_flag::{InfoLevel, Verbosity};
-use hybrid_indexer::{shared::*, websockets::*};
 use serde::{Deserialize, Serialize};
 use sled::{Db, Tree};
 use tracing_log::AsTrace;
@@ -173,7 +173,7 @@ async fn main() {
     // Start the indexer.
     match args.chain {
         Chain::Polkadot => {
-            hybrid_indexer::start::<PolkadotIndexer>(
+            acuity_index_substrate::start::<PolkadotIndexer>(
                 args.db_path,
                 args.db_mode.into(),
                 db_cache_capacity,
@@ -186,7 +186,7 @@ async fn main() {
             .await
         }
         Chain::Kusama => {
-            hybrid_indexer::start::<KusamaIndexer>(
+            acuity_index_substrate::start::<KusamaIndexer>(
                 args.db_path,
                 args.db_mode.into(),
                 db_cache_capacity,
@@ -199,7 +199,7 @@ async fn main() {
             .await
         }
         Chain::Rococo => {
-            hybrid_indexer::start::<RococoIndexer>(
+            acuity_index_substrate::start::<RococoIndexer>(
                 args.db_path,
                 args.db_mode.into(),
                 db_cache_capacity,
@@ -212,7 +212,7 @@ async fn main() {
             .await
         }
         Chain::Westend => {
-            hybrid_indexer::start::<WestendIndexer>(
+            acuity_index_substrate::start::<WestendIndexer>(
                 args.db_path,
                 args.db_mode.into(),
                 db_cache_capacity,

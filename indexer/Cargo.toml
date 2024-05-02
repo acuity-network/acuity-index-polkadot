@@ -1,9 +1,7 @@
 [package]
-name = "polkadot-indexer"
+name = "acuity-index-polkadot"
 version = "0.2.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 polkadot-metadata = { path = "../polkadot-metadata" }
@@ -20,4 +18,4 @@ byte-unit = "4.0.19"
 serde = { version = "1.0.162", features = ["derive"] }
 zerocopy = "0.7.8"
 tracing-log = "0.2.0"
-hybrid-indexer = "0.5.3"
+acuity-index-substrate = "0.6.0"
