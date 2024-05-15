@@ -1,7 +1,7 @@
-use hybrid_indexer::shared::*;
-use hybrid_indexer::substrate::*;
-use hybrid_indexer::websockets::*;
-use hybrid_indexer::*;
+use acuity_index_substrate::shared::*;
+use acuity_index_substrate::substrate::*;
+use acuity_index_substrate::websockets::*;
+use acuity_index_substrate::*;
 
 use crate::{ChainKey, PolkadotIndexer};
 
