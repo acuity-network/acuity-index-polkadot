@@ -1,17 +1,16 @@
-use rococo_metadata::rococo_metadata::{
+use paseo_metadata::paseo_metadata::{
+    Event,
     runtime_types::{
         frame_system::pallet::Event as SystemEvent,
         pallet_balances::pallet::Event as BalancesEvent,
         pallet_bounties::pallet::Event as BountiesEvent,
         pallet_child_bounties::pallet::Event as ChildBountiesEvent,
-        pallet_identity::pallet::Event as IdentityEvent,
         pallet_indices::pallet::Event as IndicesEvent,
         pallet_multisig::pallet::Event as MultisigEvent,
         pallet_preimage::pallet::Event as PreimageEvent,
         pallet_proxy::pallet::Event as ProxyEvent,
         pallet_session::pallet::Event as SessionEvent,
         pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
-        pallet_treasury::pallet::Event as TreasuryEvent,
         pallet_vesting::pallet::Event as VestingEvent,
         polkadot_runtime_common::{
             auctions::pallet::Event as AuctionsEvent, claims::pallet::Event as ClaimsEvent,
@@ -24,7 +23,6 @@ use rococo_metadata::rococo_metadata::{
             paras::pallet::Event as ParasEvent,
         },
     },
-    Event,
 };
 
 use crate::*;
@@ -32,18 +30,18 @@ use acuity_index_substrate::*;
 
 use hex_literal::hex;
 
-pub struct RococoIndexer;
+pub struct PaseoIndexer;
 
-impl acuity_index_substrate::shared::RuntimeIndexer for RococoIndexer {
+impl acuity_index_substrate::shared::RuntimeIndexer for PaseoIndexer {
     type RuntimeConfig = subxt::PolkadotConfig;
     type ChainKey = ChainKey;
 
     fn get_name() -> &'static str {
-        "rococo"
+        "paseo"
     }
 
     fn get_genesis_hash() -> <Self::RuntimeConfig as subxt::Config>::Hash {
-        hex!["6408de7737c59c238890533af25896a2c20608d8b380bb01029acb392781063e"].into()
+        hex!["77afd6190f1554ad45fd0d31aee62aacc33c6db0ea801129acb813f913e0764f"].into()
     }
 
     fn get_versions() -> &'static [u32] {
@@ -51,7 +49,7 @@ impl acuity_index_substrate::shared::RuntimeIndexer for RococoIndexer {
     }
 
     fn get_default_url() -> &'static str {
-        "wss://rococo-rpc.polkadot.io:443"
+        "wss://paseo-rpc.polkadot.io:443"
     }
 
     fn process_event(
@@ -86,14 +84,8 @@ impl acuity_index_substrate::shared::RuntimeIndexer for RococoIndexer {
             Event::Session(event) => {
                 index_session_event![SessionEvent, event, indexer, block_number, event_index]
             }
-            Event::Treasury(event) => {
-                index_treasury_event![TreasuryEvent, event, indexer, block_number, event_index]
-            }
             Event::Vesting(event) => {
                 index_vesting_event![VestingEvent, event, indexer, block_number, event_index]
-            }
-            Event::Identity(event) => {
-                index_identity_event![IdentityEvent, event, indexer, block_number, event_index]
             }
             Event::Proxy(event) => {
                 index_proxy_event![ProxyEvent, event, indexer, block_number, event_index]

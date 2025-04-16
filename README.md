@@ -1,6 +1,6 @@
 # Polkadot Indexer
 
-Event indexer for Polkadot, Kusama, Rococo and Westend blockchains.
+Event indexer for Polkadot, Kusama, Westend and Paseo blockchains.
 
 ## Architecture
 
@@ -25,7 +25,7 @@ Compiling `metadata` can take a very long time.
 Usage: polkadot-indexer [OPTIONS]
 
 Options:
-  -c, --chain <CHAIN>                Chain to index [default: polkadot] [possible values: polkadot, kusama, rococo, westend]
+  -c, --chain <CHAIN>                Chain to index [default: polkadot] [possible values: polkadot, kusama, westend, paseo]
   -d, --db-path <DB_PATH>            Database path
   -u, --url <URL>                    URL of Substrate node to connect to
   -b, --block-number <BLOCK_NUMBER>  Block number to start indexing from
@@ -56,9 +56,9 @@ docker run --rm -p 8173:8173 [image_hash] -c kusama -b 19120000 -p 8173
 ```
   
 ```sh
-docker run --rm -p 8174:8174 [image_hash] -c rococo -b 6550000 -p 8174
-```
-  
-```sh
 docker run --rm -p 8175:8175 [image_hash] -c westend -b 16940000 -p 8175
+```
+
+```sh
+docker run --rm -p 8174:8174 [image_hash] -c paseo -b 6550000 -p 8174
 ```

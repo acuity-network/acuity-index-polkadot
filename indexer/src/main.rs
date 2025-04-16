@@ -15,8 +15,8 @@ mod tests;
 pub enum Chain {
     Polkadot,
     Kusama,
-    Rococo,
     Westend,
+    Paseo,
 }
 
 #[derive(Clone, ValueEnum, Debug)]
@@ -154,10 +154,10 @@ mod polkadot;
 use polkadot::PolkadotIndexer;
 mod kusama;
 use kusama::KusamaIndexer;
-mod rococo;
-use rococo::RococoIndexer;
 mod westend;
 use westend::WestendIndexer;
+mod paseo;
+use paseo::PaseoIndexer;
 mod pallets;
 
 #[tokio::main]
@@ -198,8 +198,8 @@ async fn main() {
             )
             .await
         }
-        Chain::Rococo => {
-            acuity_index_substrate::start::<RococoIndexer>(
+        Chain::Westend => {
+            acuity_index_substrate::start::<WestendIndexer>(
                 args.db_path,
                 args.db_mode.into(),
                 db_cache_capacity,
@@ -211,8 +211,8 @@ async fn main() {
             )
             .await
         }
-        Chain::Westend => {
-            acuity_index_substrate::start::<WestendIndexer>(
+        Chain::Paseo => {
+            acuity_index_substrate::start::<PaseoIndexer>(
                 args.db_path,
                 args.db_mode.into(),
                 db_cache_capacity,
