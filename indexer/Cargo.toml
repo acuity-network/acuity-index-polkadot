@@ -1,21 +1,21 @@
 [package]
 name = "acuity-index-polkadot"
 version = "0.2.2"
-edition = "2024"
+edition.workspace = true
 
 [dependencies]
-polkadot-metadata = { path = "../polkadot-metadata" }
-kusama-metadata = { path = "../kusama-metadata" }
-westend-metadata = { path = "../westend-metadata" }
-paseo-metadata = { path = "../paseo-metadata" }
-tokio = { version = "1.28.2", features = ["macros", "rt", "rt-multi-thread"] }
-subxt = "0.35.3"
-clap = { version = "4.3.19", features = ["derive"] }
-hex-literal = "0.4.1"
-clap-verbosity-flag = "2.0.1"
-sled = { version = "0.34.7", default-features = false }
-byte-unit = "4.0.19"
-serde = { version = "1.0.162", features = ["derive"] }
-zerocopy = "0.7.8"
-tracing-log = "0.2.0"
-acuity-index-substrate = "0.6.2"
+polkadot-metadata = { workspace = true }
+kusama-metadata = { workspace = true }
+westend-metadata = { workspace = true }
+paseo-metadata = { workspace = true }
+tokio = { workspace = true, features = ["macros", "rt", "rt-multi-thread"] }
+subxt = { workspace = true }
+clap = { workspace = true, features = ["derive"] }
+hex-literal = { workspace = true }
+clap-verbosity-flag = { workspace = true }
+sled = { workspace = true, default-features = false }
+byte-unit = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+zerocopy = { workspace = true }
+tracing-log = { workspace = true }
+acuity-index-substrate = { workspace = true }

@@ -1,3 +1,6 @@
+[workspace.package]
+edition = "2024"
+
 [workspace]
 resolver = "2"
 
@@ -8,3 +11,20 @@ members = [
     "westend-metadata",
     "paseo-metadata",
 ]
+
+[workspace.dependencies]
+polkadot-metadata = { path = "polkadot-metadata" }
+kusama-metadata = { path = "kusama-metadata" }
+westend-metadata = { path = "westend-metadata" }
+paseo-metadata = { path = "paseo-metadata" }
+tokio = { version = "1.28.2", features = ["macros", "rt", "rt-multi-thread"] }
+subxt = "0.35.3"
+clap = { version = "4.3.19", features = ["derive"] }
+hex-literal = "0.4.1"
+clap-verbosity-flag = "2.0.1"
+sled = { version = "0.34.7", default-features = false }
+byte-unit = "4.0.19"
+serde = { version = "1.0.162", features = ["derive"] }
+zerocopy = "0.7.8"
+tracing-log = "0.2.0"
+acuity-index-substrate = "0.6.2"
