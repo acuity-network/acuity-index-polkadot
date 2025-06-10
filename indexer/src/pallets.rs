@@ -86,7 +86,15 @@ macro_rules! index_paras_event {
                     $event_index,
                 )?;
                 1
-            }
+            } // <$event_enum>::UpgradeCooldownRemoved { para_id } => {
+            //     $indexer.index_event(
+            //         Key::Chain(ChainKey::ParaId(para_id.0)),
+            //         $block_number,
+            //         $event_index,
+            //     )?;
+            //     1
+            // }
+            _ => 0,
         }
     };
 }

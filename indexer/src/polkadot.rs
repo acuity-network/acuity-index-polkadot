@@ -1,4 +1,5 @@
 use polkadot_metadata::polkadot_metadata::{
+    Event,
     runtime_types::{
         frame_system::pallet::Event as SystemEvent,
         pallet_bags_list::pallet::Event as BagsListEvent,
@@ -7,7 +8,6 @@ use polkadot_metadata::polkadot_metadata::{
         pallet_child_bounties::pallet::Event as ChildBountiesEvent,
         pallet_election_provider_multi_phase::pallet::Event as ElectionProviderMultiPhaseEvent,
         pallet_fast_unstake::pallet::Event as FastUnstakeEvent,
-        pallet_identity::pallet::Event as IdentityEvent,
         pallet_indices::pallet::Event as IndicesEvent,
         pallet_multisig::pallet::Event as MultisigEvent,
         pallet_nomination_pools::pallet::Event as NominationPoolsEvent,
@@ -29,7 +29,6 @@ use polkadot_metadata::polkadot_metadata::{
             paras::pallet::Event as ParasEvent,
         },
     },
-    Event,
 };
 
 use crate::*;
@@ -99,9 +98,6 @@ impl acuity_index_substrate::shared::RuntimeIndexer for PolkadotIndexer {
             }
             Event::Vesting(event) => {
                 index_vesting_event![VestingEvent, event, indexer, block_number, event_index]
-            }
-            Event::Identity(event) => {
-                index_identity_event![IdentityEvent, event, indexer, block_number, event_index]
             }
             Event::Proxy(event) => {
                 index_proxy_event![ProxyEvent, event, indexer, block_number, event_index]
