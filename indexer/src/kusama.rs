@@ -6,6 +6,8 @@ use kusama_metadata::kusama_metadata::{
         pallet_balances::pallet::Event as BalancesEvent,
         pallet_bounties::pallet::Event as BountiesEvent,
         pallet_child_bounties::pallet::Event as ChildBountiesEvent,
+        pallet_conviction_voting::pallet::Event as ConvictionVotingEvent,
+        pallet_delegated_staking::pallet::Event as DelegatedStakingEvent,
         pallet_election_provider_multi_phase::pallet::Event as ElectionProviderMultiPhaseEvent,
         pallet_fast_unstake::pallet::Event as FastUnstakeEvent,
         pallet_indices::pallet::Event as IndicesEvent,
@@ -13,6 +15,7 @@ use kusama_metadata::kusama_metadata::{
         pallet_nomination_pools::pallet::Event as NominationPoolsEvent,
         pallet_preimage::pallet::Event as PreimageEvent,
         pallet_proxy::pallet::Event as ProxyEvent,
+        pallet_referenda::pallet::Event as ReferendaEvent,
         pallet_session::pallet::Event as SessionEvent,
         pallet_staking::pallet::pallet::Event as StakingEvent,
         pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
@@ -26,7 +29,7 @@ use kusama_metadata::kusama_metadata::{
         },
         polkadot_runtime_parachains::{
             disputes::pallet::Event as DisputesEvent, hrmp::pallet::Event as HrmpEvent,
-            paras::pallet::Event as ParasEvent,
+            inclusion::pallet::Event as ParaInclusionEvent, paras::pallet::Event as ParasEvent,
         },
     },
 };
@@ -147,6 +150,27 @@ impl acuity_index_substrate::shared::RuntimeIndexer for KusamaIndexer {
                     event_index
                 ]
             }
+            Event::ConvictionVoting(event) => {
+                index_conviction_voting_event![
+                    ConvictionVotingEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
+            }
+            Event::Referenda(event) => {
+                index_referenda_event![ReferendaEvent, event, indexer, block_number, event_index]
+            }
+            Event::DelegatedStaking(event) => {
+                index_delegated_staking_event![
+                    DelegatedStakingEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
+            }
             // Polkadot pallets.
             Event::Claims(event) => {
                 index_claims_event![ClaimsEvent, event, indexer, block_number, event_index]
@@ -177,6 +201,15 @@ impl acuity_index_substrate::shared::RuntimeIndexer for KusamaIndexer {
             }
             Event::Crowdloan(event) => {
                 index_crowdloan_event![CrowdloanEvent, event, indexer, block_number, event_index]
+            }
+            Event::ParaInclusion(event) => {
+                index_para_inclusion_event![
+                    ParaInclusionEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
             }
             _ => 0,
         })

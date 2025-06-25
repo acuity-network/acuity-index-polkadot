@@ -162,8 +162,34 @@ macro_rules! index_hrmp_event {
                 )?;
                 2
             }
-            <$event_enum>::HrmpSystemChannelOpened { .. } => 0,
-            <$event_enum>::OpenChannelDepositsUpdated { .. } => 0,
+            <$event_enum>::HrmpSystemChannelOpened {
+                sender, recipient, ..
+            } => {
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(sender.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(recipient.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                2
+            }
+            <$event_enum>::OpenChannelDepositsUpdated { sender, recipient } => {
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(sender.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(recipient.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                2
+            }
         }
     };
 }
@@ -453,6 +479,49 @@ macro_rules! index_crowdloan_event {
                 )?;
                 1
             }
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! index_para_inclusion_event {
+    ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
+        match $event {
+            <$event_enum>::UpwardMessagesReceived { from, .. } => {
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(from.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                1
+            }
+            _ => 0,
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! index_on_demand_event {
+    ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
+        match $event {
+            <$event_enum>::OnDemandOrderPlaced {
+                para_id,
+                ordered_by,
+                ..
+            } => {
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                $indexer.index_event(
+                    Key::Substrate(SubstrateKey::AccountId(Bytes32(ordered_by.0))),
+                    $block_number,
+                    $event_index,
+                )?;
+                2
+            }
+            _ => 0,
         }
     };
 }
