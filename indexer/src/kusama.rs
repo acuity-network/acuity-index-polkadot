@@ -15,6 +15,7 @@ use kusama_metadata::kusama_metadata::{
         pallet_nomination_pools::pallet::Event as NominationPoolsEvent,
         pallet_preimage::pallet::Event as PreimageEvent,
         pallet_proxy::pallet::Event as ProxyEvent,
+        pallet_recovery::pallet::Event as RecoveryEvent,
         pallet_referenda::pallet::Event as ReferendaEvent,
         pallet_session::pallet::Event as SessionEvent,
         pallet_staking::pallet::pallet::Event as StakingEvent,
@@ -170,6 +171,9 @@ impl acuity_index_substrate::shared::RuntimeIndexer for KusamaIndexer {
                     block_number,
                     event_index
                 ]
+            }
+            Event::Recovery(event) => {
+                index_recovery_event![RecoveryEvent, event, indexer, block_number, event_index]
             }
             // Polkadot pallets.
             Event::Claims(event) => {
