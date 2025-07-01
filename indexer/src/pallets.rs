@@ -525,3 +525,28 @@ macro_rules! index_on_demand_event {
         }
     };
 }
+
+#[macro_export]
+macro_rules! index_assigned_slots_event {
+    ($event_enum: ty, $event: ident, $indexer: ident, $block_number: ident, $event_index: ident) => {
+        match $event {
+            <$event_enum>::PermanentSlotAssigned(para_id) => {
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                1
+            }
+            <$event_enum>::TemporarySlotAssigned(para_id) => {
+                $indexer.index_event(
+                    Key::Chain(ChainKey::ParaId(para_id.0)),
+                    $block_number,
+                    $event_index,
+                )?;
+                1
+            }
+            _ => 0,
+        }
+    };
+}

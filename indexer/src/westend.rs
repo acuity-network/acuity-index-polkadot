@@ -1,8 +1,11 @@
 use westend_metadata::westend_metadata::{
+    Event,
     runtime_types::{
         frame_system::pallet::Event as SystemEvent,
         pallet_bags_list::pallet::Event as BagsListEvent,
         pallet_balances::pallet::Event as BalancesEvent,
+        pallet_conviction_voting::pallet::Event as ConvictionVotingEvent,
+        pallet_delegated_staking::pallet::Event as DelegatedStakingEvent,
         pallet_election_provider_multi_phase::pallet::Event as ElectionProviderMultiPhaseEvent,
         pallet_fast_unstake::pallet::Event as FastUnstakeEvent,
         pallet_identity::pallet::Event as IdentityEvent,
@@ -11,21 +14,26 @@ use westend_metadata::westend_metadata::{
         pallet_nomination_pools::pallet::Event as NominationPoolsEvent,
         pallet_preimage::pallet::Event as PreimageEvent,
         pallet_proxy::pallet::Event as ProxyEvent,
+        pallet_recovery::pallet::Event as RecoveryEvent,
+        pallet_referenda::pallet::Event as ReferendaEvent,
         pallet_session::pallet::Event as SessionEvent,
         pallet_staking::pallet::pallet::Event as StakingEvent,
+        pallet_sudo::pallet::Event as SudoEvent,
         pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
+        pallet_treasury::pallet::Event as TreasuryEvent,
         pallet_vesting::pallet::Event as VestingEvent,
         polkadot_runtime_common::{
+            assigned_slots::pallet::Event as AssignedSlotsEvent,
             auctions::pallet::Event as AuctionsEvent, crowdloan::pallet::Event as CrowdloanEvent,
             paras_registrar::pallet::Event as ParasRegistrarEvent,
             slots::pallet::Event as SlotsEvent,
         },
         polkadot_runtime_parachains::{
             disputes::pallet::Event as DisputesEvent, hrmp::pallet::Event as HrmpEvent,
-            paras::pallet::Event as ParasEvent,
+            inclusion::pallet::Event as ParaInclusionEvent,
+            on_demand::pallet::Event as OnDemandEvent, paras::pallet::Event as ParasEvent,
         },
     },
-    Event,
 };
 
 use crate::*;
@@ -132,6 +140,36 @@ impl acuity_index_substrate::shared::RuntimeIndexer for WestendIndexer {
                     event_index
                 ]
             }
+            Event::Sudo(event) => {
+                index_sudo_event![SudoEvent, event, indexer, block_number, event_index]
+            }
+            Event::Treasury(event) => {
+                index_treasury_event![TreasuryEvent, event, indexer, block_number, event_index]
+            }
+            Event::Recovery(event) => {
+                index_recovery_event![RecoveryEvent, event, indexer, block_number, event_index]
+            }
+            Event::ConvictionVoting(event) => {
+                index_conviction_voting_event![
+                    ConvictionVotingEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
+            }
+            Event::Referenda(event) => {
+                index_referenda_event![ReferendaEvent, event, indexer, block_number, event_index]
+            }
+            Event::DelegatedStaking(event) => {
+                index_delegated_staking_event![
+                    DelegatedStakingEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
+            }
             // Polkadot pallets.
             Event::Paras(event) => {
                 index_paras_event![ParasEvent, event, indexer, block_number, event_index]
@@ -159,6 +197,27 @@ impl acuity_index_substrate::shared::RuntimeIndexer for WestendIndexer {
             }
             Event::Crowdloan(event) => {
                 index_crowdloan_event![CrowdloanEvent, event, indexer, block_number, event_index]
+            }
+            Event::ParaInclusion(event) => {
+                index_para_inclusion_event![
+                    ParaInclusionEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
+            }
+            Event::OnDemandAssignmentProvider(event) => {
+                index_on_demand_event![OnDemandEvent, event, indexer, block_number, event_index]
+            }
+            Event::AssignedSlots(event) => {
+                index_assigned_slots_event![
+                    AssignedSlotsEvent,
+                    event,
+                    indexer,
+                    block_number,
+                    event_index
+                ]
             }
             _ => 0,
         })
