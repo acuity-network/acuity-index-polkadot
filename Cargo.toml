@@ -18,7 +18,7 @@ kusama-metadata = { path = "kusama-metadata" }
 westend-metadata = { path = "westend-metadata" }
 paseo-metadata = { path = "paseo-metadata" }
 tokio = { version = "1.28.2", features = ["macros", "rt", "rt-multi-thread"] }
-subxt = "0.35.3"
+subxt = "0.42.1"
 clap = { version = "4.3.19", features = ["derive"] }
 hex-literal = "0.4.1"
 clap-verbosity-flag = "2.0.1"

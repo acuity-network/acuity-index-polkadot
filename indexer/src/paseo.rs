@@ -36,6 +36,7 @@ use paseo_metadata::paseo_metadata::{
         },
     },
 };
+use subxt::utils::H256;
 
 use crate::*;
 use acuity_index_substrate::*;
@@ -52,7 +53,7 @@ impl acuity_index_substrate::shared::RuntimeIndexer for PaseoIndexer {
         "paseo"
     }
 
-    fn get_genesis_hash() -> <Self::RuntimeConfig as subxt::Config>::Hash {
+    fn get_genesis_hash() -> H256 {
         hex!["77afd6190f1554ad45fd0d31aee62aacc33c6db0ea801129acb813f913e0764f"].into()
     }
 

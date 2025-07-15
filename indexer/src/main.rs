@@ -143,6 +143,9 @@ pub struct Args {
     /// Index event variants
     #[arg(short, long, default_value_t = false)]
     pub index_variant: bool,
+    /// Store events in index for immediate retrieval
+    #[arg(short, long, default_value_t = false)]
+    pub store_events: bool,
     /// Port to open for WebSocket queries
     #[arg(short, long, default_value_t = 8172)]
     pub port: u16,
@@ -180,6 +183,7 @@ async fn main() {
                 args.url,
                 args.queue_depth,
                 args.index_variant,
+                args.store_events,
                 args.port,
                 log_level,
             )
@@ -193,6 +197,7 @@ async fn main() {
                 args.url,
                 args.queue_depth,
                 args.index_variant,
+                args.store_events,
                 args.port,
                 log_level,
             )
@@ -206,6 +211,7 @@ async fn main() {
                 args.url,
                 args.queue_depth,
                 args.index_variant,
+                args.store_events,
                 args.port,
                 log_level,
             )
@@ -219,6 +225,7 @@ async fn main() {
                 args.url,
                 args.queue_depth,
                 args.index_variant,
+                args.store_events,
                 args.port,
                 log_level,
             )

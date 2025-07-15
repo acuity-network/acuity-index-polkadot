@@ -1,3 +1,4 @@
+use subxt::utils::H256;
 use westend_metadata::westend_metadata::{
     Event,
     runtime_types::{
@@ -51,7 +52,7 @@ impl acuity_index_substrate::shared::RuntimeIndexer for WestendIndexer {
         "westend"
     }
 
-    fn get_genesis_hash() -> <Self::RuntimeConfig as subxt::Config>::Hash {
+    fn get_genesis_hash() -> H256 {
         hex!["e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e"].into()
     }
 

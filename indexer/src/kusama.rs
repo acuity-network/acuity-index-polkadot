@@ -16,7 +16,7 @@ use kusama_metadata::kusama_metadata::{
         pallet_preimage::pallet::Event as PreimageEvent,
         pallet_proxy::pallet::Event as ProxyEvent,
         pallet_recovery::pallet::Event as RecoveryEvent,
-        pallet_referenda::pallet::Event as ReferendaEvent,
+        pallet_referenda::pallet::Event1 as ReferendaEvent,
         pallet_session::pallet::Event as SessionEvent,
         pallet_staking::pallet::pallet::Event as StakingEvent,
         pallet_transaction_payment::pallet::Event as TransactionPaymentEvent,
@@ -34,6 +34,7 @@ use kusama_metadata::kusama_metadata::{
         },
     },
 };
+use subxt::utils::H256;
 
 use crate::*;
 use acuity_index_substrate::*;
@@ -50,7 +51,7 @@ impl acuity_index_substrate::shared::RuntimeIndexer for KusamaIndexer {
         "kusama"
     }
 
-    fn get_genesis_hash() -> <Self::RuntimeConfig as subxt::Config>::Hash {
+    fn get_genesis_hash() -> H256 {
         hex!["b0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe"].into()
     }
 
