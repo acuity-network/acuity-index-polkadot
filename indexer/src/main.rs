@@ -140,6 +140,9 @@ pub struct Args {
     /// Maximum number of concurrent requests to the chain
     #[arg(long, default_value_t = 1)]
     pub queue_depth: u8,
+    /// Only index finalized blocks
+    #[arg(short, long, default_value_t = false)]
+    pub finalized: bool,
     /// Index event variants
     #[arg(short, long, default_value_t = false)]
     pub index_variant: bool,
@@ -181,6 +184,7 @@ async fn main() {
                 args.db_mode.into(),
                 db_cache_capacity,
                 args.url,
+                args.finalized,
                 args.queue_depth,
                 args.index_variant,
                 args.store_events,
@@ -195,6 +199,7 @@ async fn main() {
                 args.db_mode.into(),
                 db_cache_capacity,
                 args.url,
+                args.finalized,
                 args.queue_depth,
                 args.index_variant,
                 args.store_events,
@@ -209,6 +214,7 @@ async fn main() {
                 args.db_mode.into(),
                 db_cache_capacity,
                 args.url,
+                args.finalized,
                 args.queue_depth,
                 args.index_variant,
                 args.store_events,
@@ -223,6 +229,7 @@ async fn main() {
                 args.db_mode.into(),
                 db_cache_capacity,
                 args.url,
+                args.finalized,
                 args.queue_depth,
                 args.index_variant,
                 args.store_events,
