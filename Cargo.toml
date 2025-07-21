@@ -27,4 +27,4 @@ byte-unit = "4.0.19"
 serde = { version = "1.0.162", features = ["derive"] }
 zerocopy = "0.7.8"
 tracing-log = "0.2.0"
-acuity-index-substrate = "0.6.2"
+acuity-index-substrate = "0.7.0"

@@ -1,6 +1,6 @@
 [package]
 name = "acuity-index-polkadot"
-version = "0.2.2"
+version = "0.7.0"
 edition.workspace = true
 
 [dependencies]
